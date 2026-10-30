@@ -1,0 +1,17 @@
+# Секреты и локальное состояние — никогда в git
+config/project.env.local
+*.env.local
+.env*
+!.env*.example
+tools/vanessa/VAParams.json
+**/.*-pid
+scripts/1c/.designer-pid
+tools/vanessa/.vanessa-fresh.json
+tools/vanessa/vanessa-start.log
+
+# Данные и бинарники
+indexes/
+tools/vanessa/single/
+tools/vanessa/reports/
+**/__pycache__/
+*.log

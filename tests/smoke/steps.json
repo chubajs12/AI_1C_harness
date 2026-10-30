@@ -1,0 +1,8 @@
+[
+  {"id": "I-00", "kind": "ob",      "target": "bsl/config_info.bsl"},
+  {"id": "P-00", "kind": "ob",      "target": "bsl/env_check.bsl"},
+  {"id": "G-00", "kind": "python",  "target": "make_smoke.py"},
+  {"id": "R-01", "kind": "connect"},
+  {"id": "F-01", "kind": "feature", "target": "features/01_smoke_open_list.feature", "timeout": 180},
+  {"id": "K-01", "kind": "check",   "target": "bsl/env_check.bsl", "stage": "after"}
+]

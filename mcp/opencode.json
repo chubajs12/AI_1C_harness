@@ -1,0 +1,58 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "myproj-code-index": {
+      "type": "remote",
+      "url": "http://localhost:8061/mcp",
+      "enabled": true
+    },
+    "graph-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8006/mcp",
+      "enabled": true
+    },
+    "1c-syntax-checker-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8002/mcp",
+      "enabled": true
+    },
+    "1c-docs-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8003/mcp",
+      "enabled": true
+    },
+    "1c-templates-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8004/mcp",
+      "enabled": true
+    },
+    "1c-ssl-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8008/mcp",
+      "enabled": true
+    },
+    "1c-forms-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8011/mcp",
+      "enabled": true
+    },
+    "v8std": {
+      "type": "remote",
+      "url": "http://localhost:18766/mcp",
+      "enabled": true
+    },
+    "myproj-1c": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8095/myproj/hs/mcp",
+      "headers": {
+        "Authorization": "{env:MYPROJ_MCP1C_AUTH}"
+      },
+      "enabled": true
+    },
+    "myproj-vanessa": {
+      "type": "remote",
+      "url": "http://127.0.0.1:9880/mcp",
+      "enabled": true
+    }
+  }
+}

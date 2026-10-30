@@ -1,0 +1,33 @@
+# Codex CLI: фрагмент ~/.codex/config.toml (или .codex/config.toml проекта). Streamable HTTP — ключ url.
+
+[mcp_servers.myproj_code_index]
+url = "http://localhost:8061/mcp"
+
+[mcp_servers.graph_mcp]
+url = "http://localhost:8006/mcp"
+
+[mcp_servers.1c_syntax_checker_mcp]
+url = "http://localhost:8002/mcp"
+
+[mcp_servers.1c_docs_mcp]
+url = "http://localhost:8003/mcp"
+
+[mcp_servers.1c_templates_mcp]
+url = "http://localhost:8004/mcp"
+
+[mcp_servers.1c_ssl_mcp]
+url = "http://localhost:8008/mcp"
+
+[mcp_servers.1c_forms_mcp]
+url = "http://localhost:8011/mcp"
+
+[mcp_servers.v8std]
+url = "http://localhost:18766/mcp"
+
+[mcp_servers.myproj_1c]
+url = "http://127.0.0.1:8095/myproj/hs/mcp"
+# заголовок Authorization из переменной окружения (значение: python scripts\mcp1c\mcp1c.py --headers)
+env_http_headers = { "Authorization" = "MYPROJ_MCP1C_AUTH" }
+
+[mcp_servers.myproj_vanessa]
+url = "http://127.0.0.1:9880/mcp"
