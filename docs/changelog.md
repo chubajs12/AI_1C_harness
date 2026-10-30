@@ -1,5 +1,11 @@
 # Changelog (настройки агента)
 
+## 1.4.8 — 2026-10-31
+
+- Finish pass: `scripts/new-project.ps1` (scaffold проекта, `-WhatIf`), ПДн — `rules/pdn-anonymization.md`, `docs/15_ПДн_обезличивание.md`.
+- `scripts/check-upstream-releases.ps1` — локальные MCP-пакеты и digest образов compose; Task Scheduler `AI_1C_upstream_daily` (07:00, dry-run).
+- `docs/12`: путь сырцов energy → `energy_ext_src`. `docs/00`, `docs/11` обновлены.
+
 ## 1.4.7 — 2026-10-30
 
 - Новый чат сразу заводит `tasks/YYYY-MM-DD-кратко/` и пишет туда каждый запрос дословно и ответ, который ушел в чат. Секреты в папку не попадают. Без этой папки новый чат задачу не видит.

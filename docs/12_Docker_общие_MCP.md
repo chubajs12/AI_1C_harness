@@ -39,7 +39,7 @@
 | `dolea_code_index` | 8013 | `F:\AI_1C\projects\dolea_src` | `...\dolea\indexes\code-index` |
 | `rostviplast_code_index` | 8042 | `...\rostviplast_src` | `...\rostviplast\indexes\code-index` |
 | `mirax_code_index` | 8052 | `...\mirax_src` | `...\mirax\indexes\code-index` |
-| `energy_code_index` | 8041 | `F:\AI_DeepSeek\AI_1C\projects\energy_ext_src` | `F:\AI_1C\projects\energy\indexes\code-index` |
+| `energy_code_index` | 8041 | `F:\AI_1C\projects\energy_ext_src` | `F:\AI_1C\projects\energy\indexes\code-index` |
 | `buh_demo_code_index` | 8062 | `F:\AI_AstraCode\buh_demo_src` | `...\buh_demo\indexes\code-index` |
 | `smallbusiness_code_index` | 8061 | `F:\AI_AstraCode\SmallBusiness_demo_src` | `...\SmallBusiness_demo\indexes\code-index` |
 

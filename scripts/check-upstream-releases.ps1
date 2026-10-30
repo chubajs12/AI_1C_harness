@@ -1,4 +1,4 @@
-# Сверка локальных клонов upstream с GitHub (dry-run по умолчанию).
+﻿# Сверка локальных клонов upstream с GitHub (dry-run по умолчанию).
 # Дизайн: docs/11_Upstream_релизы.md. Ничего не pull/copy без -Apply и whitelist.
 #   .\check-upstream-releases.ps1
 #   .\check-upstream-releases.ps1 -Apply   # только fetch для id из autoPullWhitelist (после «да» на политику)
@@ -122,9 +122,55 @@ foreach ($repo in $wl.repos) {
 }
 
 $lines.Add('')
-$lines.Add("Итого потенциально свежее/расхождение: $newer")
+$lines.Add('## MCP package sources (local)')
 $lines.Add('')
-$lines.Add('Автопилот и schedule не включены. См. docs/11_Upstream_релизы.md')
+$lines.Add('| id | path/url | newest artifact | note |')
+$lines.Add('|----|----------|-----------------|------|')
+
+foreach ($src in @($wl.mcpPackageSources)) {
+    $note = ''
+    $newest = '-'
+    if ($src.kind -eq 'local-folder' -and $src.path) {
+        $p = $src.path -replace '/', '\'
+        if (Test-Path -LiteralPath $p) {
+            $files = Get-ChildItem -LiteralPath $p -File -Recurse -ErrorAction SilentlyContinue |
+                Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            if ($files) { $newest = "$($files.Name) ($($files.LastWriteTime.ToString('yyyy-MM-dd HH:mm')))" }
+            else { $newest = 'empty'; $note = 'no files' }
+        } else {
+            $newest = 'missing'; $note = 'path missing'
+        }
+    } else {
+        $newest = 'manual'; $note = "$($src.kind) $($src.url)"
+    }
+    $loc = if ($src.path) { $src.path } else { $src.url }
+    $lines.Add(('| {0} | {1} | {2} | {3} |' -f $src.id, $loc, $newest, $note))
+}
+
+$lines.Add('')
+$lines.Add('## Docker images (compose groups, digest local)')
+$lines.Add('')
+$composeImages = @(
+    @{ g = '1c'; f = 'F:\MCP_Distr\compose-1c\docker-compose.yml' },
+    @{ g = '2graph'; f = 'F:\MCP_Distr\graph\docker-compose.yml' },
+    @{ g = '3codeindex'; f = 'F:\MCP_Distr\compose-codeindex\docker-compose.yml' }
+)
+foreach ($c in $composeImages) {
+    if (-not (Test-Path -LiteralPath $c.f)) { continue }
+    $yml = Get-Content -LiteralPath $c.f -Raw -Encoding UTF8
+    $imgs = [regex]::Matches($yml, '(?m)^\s*image:\s*(.+)$') | ForEach-Object { $_.Groups[1].Value.Trim() } | Sort-Object -Unique
+    foreach ($img in $imgs) {
+        $id = (docker image inspect $img --format '{{.Id}}' 2>$null)
+        if (-not $id) { $id = 'not-local' }
+        else { $id = $id.Substring(7, 12) }
+        $lines.Add(('| {0} | {1} | {2} |' -f $c.g, $img, $id))
+    }
+}
+
+$lines.Add('')
+$lines.Add("Итого потенциально свежее/расхождение (git): $newer")
+$lines.Add('')
+$lines.Add('Schedule: Windows Task AI_1C_upstream_daily (notify dry-run). Apply/auto-pull: docs/11_Upstream_релизы.md')
 
 $report = ($lines -join "`n") + "`n"
 Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8

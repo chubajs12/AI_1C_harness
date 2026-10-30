@@ -1,6 +1,6 @@
 # Проверка свежести upstream на GitHub
 
-**Статус:** queued requirement (30.10.2026). Полный автопилот (ежедневный schedule + авто-merge rules/skills/MCP) — **только после явного «да»**. Сейчас: дизайн + dry-run скрипт, без планировщика.
+**Статус:** 31.10.2026 — ежедневный **notify dry-run** через Task Scheduler (`AI_1C_upstream_daily`, 07:00, `-SkipGh` если нет `gh auth`). Полный автопилот (auto-merge rules/skills/MCP, `-Apply`) — **только после явного «да»**.
 
 ## Цель
 
@@ -68,9 +68,21 @@
 
 Whitelist (черновик, пустой до решения): например только `vanessa-automation` (скачать release asset) и `1c_mcp` (обновить upstream clone) — rules/skills всегда ручной review.
 
-## Расписание (не включать сейчас)
+## Расписание
 
-После «да»: Windows Task Scheduler / systemd на машине агента, раз в сутки, `check-upstream-releases.ps1` → notify. Apply — отдельная команда/задача.
+Создано на машине агента (31.10.2026):
+
+```text
+schtasks /Query /TN AI_1C_upstream_daily
+```
+
+Команда создания (если пересоздать):
+
+```text
+schtasks /Create /F /TN AI_1C_upstream_daily /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File F:\AI_1C\harness\scripts\check-upstream-releases.ps1 -SkipGh" /SC DAILY /ST 07:00 /RL LIMITED
+```
+
+После рабочего `gh auth` убрать `-SkipGh` из `/TR`. Apply — отдельная команда/задача, не в schedule.
 
 ## Связанные файлы
 
