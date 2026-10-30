@@ -15,3 +15,7 @@ tools/vanessa/single/
 tools/vanessa/reports/
 **/__pycache__/
 *.log
+
+# Временные артефакты (чистить после задачи)
+temp/*
+!temp/README.md
