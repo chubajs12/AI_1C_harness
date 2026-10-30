@@ -76,13 +76,15 @@ Whitelist (черновик, пустой до решения): например
 schtasks /Query /TN AI_1C_upstream_daily
 ```
 
-Команда создания (если пересоздать):
+Пересоздание (интерактивный пользователь, gh keyring):
 
-```text
-schtasks /Create /F /TN AI_1C_upstream_daily /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File F:\AI_1C\harness\scripts\check-upstream-releases.ps1 -SkipGh" /SC DAILY /ST 07:00 /RL LIMITED
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File F:\AI_1C\harness\scripts\register-upstream-daily-task.ps1
+# без GitHub API:
+powershell -NoProfile -ExecutionPolicy Bypass -File F:\AI_1C\harness\scripts\register-upstream-daily-task.ps1 -SkipGh
 ```
 
-После рабочего `gh auth` убрать `-SkipGh` из `/TR`. Apply — отдельная команда/задача, не в schedule.
+Задача вызывает `scripts/run-upstream-daily.ps1` (PATH/LOCALAPPDATA пользователя). Apply — отдельная команда/задача, не в schedule.
 
 ## Связанные файлы
 

@@ -85,4 +85,15 @@ Onboarding: `docs/14_GitHub_и_upstream.md`, `docs/00_Подключить_пр�
 
 ---
 
-Версия харнеса: **1.4.8**. Дата отчёта: 2026-10-31.
+## 2026-10-31 closure
+
+| # | Задача | Статус | Доказательство |
+|---|--------|--------|----------------|
+| 1 | Mirax ext XML → `mirax_src\ext` | **FAILED (нет источника)** | Поиск `Configuration.xml` / `*.cfe` с `mirax` и каталогов `*\mirax_src\ext`, `*\mirax\ext` в `F:\AI_Cursor`, `F:\AI_DeepSeek`, `F:\AI_Claude`, `F:\AI_1C` — **0** файлов ext. `F:\AI_1C\projects\mirax_src\ext` — только `.code-index` (0 XML). `mirax_src\conf` — **517** файлов. Registrar: `MiraxExt` → `metadata_source_unavailable` (лог `graph_registrar`). Reindex ext: **0** файлов, контейнер `mirax_code_index` Up, MCP `:8052` tools/list OK. |
+| 2 | Graph refresh `never_run` | **IN PROGRESS** | `list_graph_projects`: 9× `never_run` (+ Dolea `inherited`). Старт `temp/graph-refresh-queue.py` (ожидание `ingestion_busy`). `get_indexing_status`: `bsl_code_graph` + `xml_data_sources` **running** (Dolea `/app/code`), `any_running=true`. После idle — очередь вызывает `refresh_graph_project.py` для BuhDemo*, Energy*, MiraxConf, Rostviplast*, SmallBusiness*. Скрипты: `scripts/mcp/refresh_graph_project.py`, `scripts/mcp/refresh-graph-never-run.ps1`. `graph_mcp` healthy, `:8006/healthz` 200. |
+| 3 | Junction `F:\AI_Cursor\vpn-server` | **PARTIAL** | Lock: `node.exe` (Cursor worker). Rename каталога — отказ. Robocopy → `F:\AI_Apps\projects\vpn-server` (файлов **306** vs **305** в старом). `F:\AI_Cursor\vpn-server\MOVED.md` с командой `mklink /J`. Junction не создан (каталог занят). |
+| 4 | `gh` в `AI_1C_upstream_daily` | **DONE** | `register-upstream-daily-task.ps1` без `-SkipGh`; TR → `run-upstream-daily.ps1`. Ручной прогон: отчёт `temp/upstream-check-20261030-2355.md`, gh API без `-SkipGh`. |
+| 5 | Отчёт + store | **DONE** | Этот файл + копия в Project store `docs/harness-finish-report-2026-10-31.md`. |
+| 6 | Git harness | **DONE** | Версия **1.4.9**, ветка `cursor/harness-closure-d682`, push origin. |
+
+Версия харнеса: **1.4.9**. Дата closure: 2026-10-31.

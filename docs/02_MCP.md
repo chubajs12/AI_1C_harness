@@ -100,7 +100,10 @@ scripts\mcp\code-index\reindex.ps1 -Repos ext,conf   # после выгрузк
 
 ```powershell
 python scripts\mcp\mcp_http.py http://127.0.0.1:8006/mcp/ list_graph_projects '{}'
-python scripts\mcp\mcp_http.py http://127.0.0.1:8006/mcp/ refresh_graph_project '{"project_id":"MyprojExt","operation_id":"<uuid4>"}'
+# PowerShell снимает кавычки из JSON — используйте обертку:
+python scripts\mcp\refresh_graph_project.py MyprojExt
+# Пакетно для ingestion_state=never_run (ожидание ingestion_busy):
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\mcp\refresh-graph-never-run.ps1
 ```
 
 После правки метаданных — `refresh_graph_project` (инкрементально) нужного `project_id`. Отчеты Конфигуратора `.txt`

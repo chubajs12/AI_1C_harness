@@ -1,5 +1,11 @@
 # Changelog (настройки агента)
 
+## 1.4.9 — 2026-10-31
+
+- Graph: `scripts/mcp/refresh_graph_project.py`, `scripts/mcp/refresh-graph-never-run.ps1` (обход кавычек PowerShell).
+- Upstream schedule: `scripts/run-upstream-daily.ps1`, `scripts/register-upstream-daily-task.ps1` (gh keyring под интерактивным пользователем).
+- `docs/02_MCP.md`, `docs/11_Upstream_релизы.md` — команды refresh и пересоздания задачи.
+
 ## 1.4.8 — 2026-10-31
 
 - Finish pass: `scripts/new-project.ps1` (scaffold проекта, `-WhatIf`), ПДн — `rules/pdn-anonymization.md`, `docs/15_ПДн_обезличивание.md`.
