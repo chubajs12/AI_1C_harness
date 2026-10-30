@@ -61,7 +61,7 @@ function Get-KitMcp {
         PlatformVer  = $ver
         RasPort      = if ($Cfg['RAS_PORT']) { [int]$Cfg['RAS_PORT'] } else { 1545 }
         Cluster      = if ($Cfg['CLUSTER']) { $Cfg['CLUSTER'] } else { 'localhost:1540' }
-        Channel      = if ($Cfg['DB_CHANNEL']) { $Cfg['DB_CHANNEL'].ToLower() } else { 'mcp1c' }
+        Channel      = 'mcp1c'
     }
     $m['Url'] = if ($Cfg['MCP1C_URL']) { $Cfg['MCP1C_URL'] } else { "http://127.0.0.1:$port/$app/hs/mcp" }
     return $m

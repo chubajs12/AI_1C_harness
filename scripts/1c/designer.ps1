@@ -7,9 +7,8 @@
 #
 # Правила (AGENTS.md п. 1.3, 1.7): Load только Full, UpdateDB отдельно и без лимита времени, основную конфигурацию
 # не загружать без явного разрешения пользователя (-AllowConfLoad). UpdateDB требует монопольного доступа: пул IIS
-# публикации MCP 1С проекта останавливается (сеансы публикации держат базу, mcp-pool.ps1) и после запускается снова;
-# при запасном канале DB_CHANNEL=onebridge так же останавливается и поднимается OneBridge. Спящие сеансы убитых
-# клиентов тоже мешают (docs/05, cluster-sessions.ps1).
+# публикации MCP 1С проекта останавливается (сеансы публикации держат базу, mcp-pool.ps1) и после запускается снова.
+# Спящие сеансы убитых клиентов тоже мешают (docs/05, cluster-sessions.ps1).
 param(
     [Parameter(Mandatory)]
     [ValidateSet('Dump', 'Load', 'UpdateDB')]
@@ -30,8 +29,7 @@ param(
     # Разрешение пользователя загружать/обновлять основную конфигурацию
     [switch]$AllowConfLoad,
 
-    # Не трогать MCP 1С (пул публикации) / OneBridge перед UpdateDB
-    [Alias('KeepOneBridge')]
+    # Не останавливать пул публикации MCP 1С перед UpdateDB
     [switch]$KeepMcp,
 
     [string]$EnvFile = ''
@@ -53,9 +51,7 @@ $Log = Join-Path $env:TEMP "$($cfg['PROJECT'])_designer_${Action}_${Target}_$sta
 $PidFile = Join-Path $PSScriptRoot '.designer-pid'
 $mcp = Get-KitMcp $cfg
 $mcpPool = Join-Path $PSScriptRoot '..\mcp1c\mcp-pool.ps1'
-$onebridge = Join-Path $PSScriptRoot '..\onebridge\start-onebridge.ps1'
 $restartMcp = $false
-$restartOneBridge = $false
 
 if ($Action -eq 'Load') {
     if (-not (Test-Path -LiteralPath (Join-Path $ConfigDir 'Configuration.xml'))) { throw "Нет $ConfigDir\Configuration.xml" }
@@ -69,19 +65,10 @@ if ($Action -eq 'Load') {
     }
 }
 
-if ($Action -eq 'UpdateDB' -and -not $KeepMcp -and $mcp.Channel -eq 'mcp1c' -and (Test-Path $mcpPool)) {
+if ($Action -eq 'UpdateDB' -and -not $KeepMcp -and (Test-Path $mcpPool)) {
     Write-Host "[designer] останавливаю пул публикации MCP 1С ($($mcp.Pool)) на время UpdateDB" -ForegroundColor Yellow
     & $mcpPool -Stop -EnvFile $cfg['ENV_FILE']
     $restartMcp = $true
-}
-if ($Action -in @('Load', 'UpdateDB') -and -not $KeepMcp -and $mcp.Channel -eq 'onebridge' -and (Test-Path $onebridge)) {
-    & $onebridge -Status -EnvFile $cfg['ENV_FILE'] | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host '[designer] OneBridge проекта запущен — останавливаю на время операции' -ForegroundColor Yellow
-        & $onebridge -Stop -EnvFile $cfg['ENV_FILE']
-        $restartOneBridge = $true
-        Start-Sleep -Seconds 5
-    }
 }
 
 if (-not (Test-Path $ConfigDir)) { New-Item -ItemType Directory -Path $ConfigDir -Force | Out-Null }
@@ -119,9 +106,5 @@ if (Test-Path $Log) {
 if ($restartMcp) {
     Write-Host '[designer] запускаю пул публикации MCP 1С' -ForegroundColor Cyan
     & $mcpPool -Start -EnvFile $cfg['ENV_FILE']
-}
-if ($restartOneBridge) {
-    Write-Host '[designer] поднимаю OneBridge обратно' -ForegroundColor Cyan
-    & $onebridge -EnvFile $cfg['ENV_FILE']
 }
 exit $ec

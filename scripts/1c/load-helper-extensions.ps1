@@ -1,8 +1,7 @@
 ﻿# Загрузка в базу проекта служебных расширений тестирования: client_mcp (MCP-сервер Vanessa внутри TestManager,
 # без него runMcp не слушает порт) и VAExtension (шаги «выполняю выражение в текущем окне» и др.).
 # Это изменение базы — только с согласия пользователя (тестовая база проекта). Нужен монопольный доступ: пул публикации
-# MCP 1С останавливается и после запускается снова (mcp-pool.ps1; при DB_CHANNEL=onebridge — останавливается OneBridge,
-# поднять его — start-onebridge.ps1); пару Vanessa после — restart-vanessa.ps1.
+# MCP 1С останавливается и после запускается снова (mcp-pool.ps1); пару Vanessa после — restart-vanessa.ps1.
 # LoadCfg и UpdateDBCfg в одной команде на этой платформе дают «Ошибка в параметрах командной строки» — раздельно.
 # Проверено на ERP 2.5 / платформе 8.3.27 (режим совместимости «Не использовать»). Если у конфигурации проекта режим
 # совместимости расширений ниже, загрузка может не пройти — сообщить пользователю (config_info.bsl покажет режим).
@@ -18,14 +17,8 @@ $ErrorActionPreference = 'Stop'
 $cfg = Get-KitEnv -EnvFile $EnvFile
 $tools = Join-Path (Get-KitRoot) 'tools\vanessa'
 
-$mcp = Get-KitMcp $cfg
 $mcpPool = Join-Path $PSScriptRoot '..\mcp1c\mcp-pool.ps1'
-$onebridge = Join-Path $PSScriptRoot '..\onebridge\start-onebridge.ps1'
-if ($mcp.Channel -eq 'onebridge') {
-    if (Test-Path $onebridge) { & $onebridge -Stop -EnvFile $cfg['ENV_FILE'] }
-} elseif (Test-Path $mcpPool) {
-    & $mcpPool -Stop -EnvFile $cfg['ENV_FILE']
-}
+if (Test-Path $mcpPool) { & $mcpPool -Stop -EnvFile $cfg['ENV_FILE'] }
 
 function Invoke-Designer([string[]]$Tail, [string]$LogName) {
     $log = Join-Path $env:TEMP "$($cfg['PROJECT'])_$LogName.log"
@@ -48,6 +41,6 @@ try {
     if (-not $SkipClientMcp) { Install-Extension (Join-Path $tools 'client_mcp.cfe') 'client_mcp' }
     if (-not $SkipVaExtension) { Install-Extension (Join-Path $tools 'VAExtension.1.29.cfe') 'VAExtension' }
 } finally {
-    if ($mcp.Channel -ne 'onebridge' -and (Test-Path $mcpPool)) { & $mcpPool -Start -EnvFile $cfg['ENV_FILE'] }
+    if (Test-Path $mcpPool) { & $mcpPool -Start -EnvFile $cfg['ENV_FILE'] }
 }
 Write-Host '[helpers] готово. Пару Vanessa поднять заново (restart-vanessa.ps1).' -ForegroundColor Green

@@ -1,7 +1,7 @@
 ﻿# Сеансы базы проекта на кластере (rac через временный RAS): кто мешает UpdateDB.
 #   cluster-sessions.ps1                       # сеансы базы + живые процессы клиентов 1С этой машины
 #   cluster-sessions.ps1 -Terminate 163,170    # завершить сеансы по номерам — ТОЛЬКО с согласия пользователя
-# Клиент 1С, убитый Stop-Process (рестарт Vanessa, OneBridge -Stop), оставляет сеанс на кластере (hibernate=yes) до
+# Клиент 1С, убитый Stop-Process (рестарт Vanessa), оставляет сеанс на кластере (hibernate=yes) до
 # суток — он мешает монопольным операциям (UpdateDB). Надежная проверка «мертвый» — нет живого процесса клиента с тем
 # же временем начала (вторая таблица; время сеанса на кластере — на несколько секунд позже старта процесса).
 # Мертвые сеансы своих процессов — завершать с согласия пользователя; живые сеансы людей — только спросив отдельно.
@@ -57,7 +57,7 @@ try {
         Get-CimInstance Win32_Process -Filter "Name='1cv8.exe' OR Name='1cv8c.exe'" |
             Where-Object { $_.CommandLine -match (Get-KitIbPattern $cfg) } |
             Select-Object ProcessId, Name, @{n = 'Начало'; e = { $_.CreationDate.ToString('s') } },
-            @{n = 'Режим'; e = { [regex]::Match($_.CommandLine, '/TESTMANAGER|/TestClient|/Execute\s*"?[^"]*OneBridge|DESIGNER').Value } } |
+            @{n = 'Режим'; e = { [regex]::Match($_.CommandLine, '/TESTMANAGER|/TestClient|DESIGNER').Value } } |
             Format-Table -AutoSize | Out-String -Width 200 | Write-Host
     }
 } finally {

@@ -20,7 +20,7 @@ MCP-серверы — инструменты агента: поиск по ко
 | `1c-forms-mcp` | `http://localhost:8011/mcp` | общий | `desko77/1c-formsserver` | генерация и валидация `Form.xml` |
 | `v8std` | `http://localhost:18766/mcp` | общий | `ghcr.io/zeegin/v8std-mcp:stable` | стандарты v8std.ru, диагностики BSL LS/ACC/EDT |
 | MCP 1С | `http://127.0.0.1:<MCP1C_PORT>/<MCP1C_APP>/hs/mcp` (Basic) | своя публикация IIS (свой пул) | `tools/mcp1c/` (`MCP_Сервер` + `MCP_ВыполнениеКода`), `03_MCP_1С.md` | код и запросы в живой базе |
-| Vanessa | `http://127.0.0.1:<VANESSA_MCP_PORT>/mcp` | свой процесс 1С | VA single + расширение `client_mcp` | управление тестированием UI |
+| Vanessa | `http://127.0.0.1:<VANESSA_MCP_PORT>/mcp` | свой процесс 1С | [Pr-Mex/vanessa-automation](https://github.com/Pr-Mex/vanessa-automation) single 1.2.043.28 + расширение `client_mcp` | управление тестированием UI |
 
 Общие контейнеры работают постоянно (`restart: unless-stopped`), Docker Desktop: группа «1c» — syntax/docs/templates/
 ssl/forms/v8std, группа «2graph» — граф. Их не пересоздавать, не останавливать, не удалять: ими пользуются все проекты.
@@ -88,7 +88,7 @@ scripts\mcp\code-index\reindex.ps1 -Repos ext,conf   # после выгрузк
 Подключение нового проекта — **изменение общей инфраструктуры, только с согласия пользователя**:
 
 1. В `F:\MCP_Distr\graph\docker-compose.yml` (сервис `mcp`, `volumes`) добавить монтирование выгрузок только на чтение:
-   `- "F:/AI_Claude/<проект>_src/conf:/app/<проект>_conf:ro"` и `.../ext:/app/<проект>_ext:ro`.
+   `- "F:/AI_1C/projects/<проект>_src/conf:/app/<проект>_conf:ro"` и `.../ext:/app/<проект>_ext:ro`.
 2. Пересоздать только сервис графа: `docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file
    F:\MCP_Distr\graph\.env up -d mcp` (секреты лицензии — в `.env`, не публиковать). Граф недоступен ~3 минуты для всех.
 3. В `F:\MCP_Distr\graph\registrar\projects.json` добавить
@@ -130,4 +130,4 @@ Codex). Все серверы — обычный `http://localhost:<порт>/mc
 3. Свой индексатор — `start-code-index.ps1` (`docker start`), смотреть `docker logs`.
 4. MCP 1С — `mcp1c.py --status`: 503 — пул остановлен (`mcp-pool.ps1 -Start`; идет UpdateDB — дождаться), 401 — пароль
    `USER`, 404 — нет публикации (`publish-mcp.ps1`), инструментов нет — расширения (`install-mcp.ps1`); Vanessa —
-   `restart-vanessa.ps1`. Запасной OneBridge — `start-onebridge.ps1 -Force` (`09_OneBridge_запасной_вариант.md`).
+   `restart-vanessa.ps1`.

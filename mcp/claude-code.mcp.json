@@ -35,7 +35,7 @@
     "myproj-1c": {
       "type": "http",
       "url": "http://127.0.0.1:8095/myproj/hs/mcp",
-      "headersHelper": "python F:/AI_Claude/myproj/scripts/mcp1c/mcp1c.py --headers"
+      "headersHelper": "python F:/AI_1C/harness/scripts/mcp1c/mcp1c.py --headers"
     },
     "myproj-vanessa": {
       "type": "http",

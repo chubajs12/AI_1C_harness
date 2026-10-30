@@ -60,7 +60,7 @@ foreach ($k in $mcp.Keys) {
     else { Add-Row $k 'FAIL' 'общий MCP не отвечает — сообщить пользователю, не пересоздавать' }
 }
 
-# MCP 1С базы: статус и безопасный режим execute_code (Basic USER/PASS; при DB_CHANNEL=onebridge — OneBridge)
+# MCP 1С базы: статус и безопасный режим execute_code (Basic USER/PASS)
 $env:PYTHONIOENCODING = 'utf-8'
 $client = Join-Path $root 'scripts\mcp1c\mcp1c.py'
 $status = & python $client --status 2>&1

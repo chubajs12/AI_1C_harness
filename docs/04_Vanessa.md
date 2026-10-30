@@ -17,7 +17,9 @@
 ```
 
 - **TestManager (TM)** — тонкий клиент с ключом `/TESTMANAGER`, в нем открыта обработка Vanessa Automation (single,
-  1.2.043.28). Расширение **`client_mcp`** (0.6.5, компонента WebTransportAddIn — есть сборки Windows и Linux)
+  1.2.043.28). Исходники и релизы — [Pr-Mex/vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
+  (файл `vanessa-automation-single.1.2.043.28.zip`; на GitHub есть новее, в комплекте закреплена 1.2.043.28).
+  Расширение **`client_mcp`** (0.6.5, компонента WebTransportAddIn — есть сборки Windows и Linux)
   поднимает в TM HTTP MCP-сервер на `VANESSA_MCP_PORT`: агент управляет Vanessa инструментами (`run_scenario`,
   `connect_test_client`, `get_test_results`, `get_form_analysis`, `get_window_screenshot_os` и еще ~30).
 - **TestClient (TC)** — второй тонкий клиент той же базы с `/TestClient -TPort <порт>`: в нем Vanessa открывает формы,
@@ -79,8 +81,7 @@
 ]
 ```
 
-- `ob` — BSL через MCP 1С `execute_code` (вайп, НСИ, фикстуры), PASS при `Результат.ok = Истина` (имя вида — от
-  OneBridge; при `DB_CHANNEL=onebridge` идет через него).
+- `ob` — BSL через MCP 1С `execute_code` (вайп, НСИ, фикстуры), PASS при `Результат.ok = Истина`.
 - `check` — то же, `&ЭТАП` в тексте заменяется на `stage`: один файл проверок на разные этапы.
 - `restart` — свежая пара (только после UpdateDB/CFE, правки VAParams, мертвого порта); `connect` — «Этот клиент».
 - `feature` — одна фича; `connect: true` — подключить клиент перед ней (нужно первой фиче после рестарта).
@@ -89,7 +90,7 @@
   для показа: подготовка до нужного состояния), `--dry-run`, `--continue-on-fail`, `--shots <каталог>`.
 - Первый FAIL останавливает прогон: чинить по одному, не гонять дальше по сломанным данным.
 
-Образец из Energy — `examples/energy/scripts/pmi/run_esks_arm.py` (≈50 шагов: вайп и НСИ через OneBridge — в Energy с 16.10.2026 MCP 1С, тестовый
+Образец из Energy — `examples/energy/scripts/pmi/run_esks_arm.py` (≈50 шагов: вайп и НСИ через MCP 1С, тестовый
 пользователь с ролями через профили БСП, цикл в тонком клиенте, переключение клиентов тестирования «Этот клиент» /
 «АРМ клиент» (вход под тестовым пользователем), фичи АРМ, проверки данных после каждого блока, регламентное задание
 через вызов обработчика, скриншоты для инструкций). В комплекте `run_steps.py` — та же схема, обобщенная на JSON.

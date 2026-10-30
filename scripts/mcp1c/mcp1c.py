@@ -21,9 +21,6 @@ http://127.0.0.1:<MCP1C_PORT>/<MCP1C_APP>/hs/mcp (publish-mcp.ps1), вход —
 примитивы, таблицы значений — в JSON). Ошибка 1С — RuntimeError с текстом и строкой кода. Повтор при сетевом отказе и
 при 503 (пул публикации остановлен на время UpdateDB) — только для читающего кода: run_code(..., retries=3) по
 умолчанию; для пишущего кода передавайте retries=1.
-
-Запасной канал: DB_CHANNEL=onebridge в параметрах — те же функции идут через OneBridge (scripts/onebridge/ob_client.py,
-docs/09). Вызывающим скриптам менять ничего не нужно.
 """
 from __future__ import annotations
 
@@ -46,16 +43,6 @@ def cfg() -> dict[str, str]:
     if _CFG is None:
         _CFG = env()
     return _CFG
-
-
-def channel() -> str:
-    return (cfg().get("DB_CHANNEL") or "mcp1c").strip().lower()
-
-
-def _onebridge():
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "onebridge"))
-    import ob_client  # noqa: PLC0415
-    return ob_client
 
 
 def url() -> str:
@@ -89,9 +76,6 @@ def rpc(method: str, params: dict | None = None, timeout: float = 600) -> dict:
 
 def call_tool(name: str, arguments: dict, timeout: float = 600) -> str:
     """Текст ответа инструмента; ошибка инструмента (isError) — RuntimeError с текстом 1С."""
-    if channel() == "onebridge":
-        ob = _onebridge()
-        return ob.call_tool(ob.default_port(), name, arguments, timeout)
     res = rpc("tools/call", {"name": name, "arguments": arguments}, timeout)
     text = "\n".join(c.get("text", "") for c in res.get("content", []))
     if res.get("isError"):
@@ -100,9 +84,6 @@ def call_tool(name: str, arguments: dict, timeout: float = 600) -> str:
 
 
 def list_tools() -> list[str]:
-    if channel() == "onebridge":
-        ob = _onebridge()
-        return ob.list_tools(ob.default_port())
     return [t["name"] for t in rpc("tools/list", {}, 60)["tools"]]
 
 
@@ -137,7 +118,7 @@ def run_query(query: str, params: dict | None = None, limit: int = 0, timeout: f
     try:
         obj = json.loads(raw)
     except ValueError:
-        return raw  # OneBridge может отвечать в формате TOON
+        return raw
     return obj.get("data", obj) if isinstance(obj, dict) else obj
 
 
@@ -151,15 +132,11 @@ def main() -> int:
         print(json.dumps({"Authorization": auth_header()}))
     elif args[0] == "--status":
         try:
-            if channel() == "onebridge":
-                print("UP onebridge", list_tools()[:3])
-            else:
-                info = rpc("initialize", {"protocolVersion": "2025-03-26", "capabilities": {},
-                                          "clientInfo": {"name": "kit-mcp1c", "version": "1"}}, 60)
-                print("UP", url(), info.get("serverInfo"))
+            info = rpc("initialize", {"protocolVersion": "2025-03-26", "capabilities": {},
+                                      "clientInfo": {"name": "kit-mcp1c", "version": "1"}}, 60)
+            print("UP", url(), info.get("serverInfo"))
         except (OSError, RuntimeError) as exc:
-            where = f"onebridge :{cfg().get('ONEBRIDGE_PORT')}" if channel() == "onebridge" else url()
-            print("DOWN", where, str(exc)[:300])
+            print("DOWN", url(), str(exc)[:300])
             return 1
     elif args[0] == "--list":
         print("\n".join(list_tools()))
