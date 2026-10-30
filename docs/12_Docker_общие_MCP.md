@@ -1,11 +1,11 @@
-# Docker MCP линии 1С: три зоны
+﻿# Docker MCP линии 1С: три зоны
 
 Канон Docker Desktop — **три** compose‑проекта (не смешивать):
 
 | Группа | Compose | Состав |
 |--------|---------|--------|
 | **1c** | `F:\MCP_Distr\compose-1c\docker-compose.yml` | Только общие MCP: help, ssl, templates, syntaxcheck, forms, v8std |
-| **codeindex** | `F:\MCP_Distr\compose-codeindex\docker-compose.yml` | Только `*_code_index` (dolea, mirax, rostviplast, energy, buh_demo, smallbusiness, …) |
+| **3codeindex** | `F:\MCP_Distr\compose-codeindex\docker-compose.yml` | Только `*_code_index` (dolea, mirax, rostviplast, energy, buh_demo, smallbusiness, …) |
 | **2graph** | `F:\MCP_Distr\graph\docker-compose.yml` | Только граф: `graph_mcp`, `graph_neo4j`, `graph_ollama`, `graph_registrar` |
 
 **Запрещено:** класть `help_mcp` / прочие MCP в 2graph; класть `*_code_index` в 2graph.
@@ -32,7 +32,7 @@
 
 `docker compose -f F:\MCP_Distr\compose-1c\docker-compose.yml up -d`
 
-## codeindex — индексаторы кода
+## 3codeindex — индексаторы кода
 
 | Контейнер | Порт | Сырцы | Индекс |
 |-----------|------|-------|--------|
@@ -65,3 +65,4 @@
 `docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file F:\MCP_Distr\graph\.env up -d`
 
 Реестр образов/источников: `docs/13_Docker_реестр_контейнеров.md`.
+
