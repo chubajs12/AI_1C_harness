@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "policy": {
+    "defaultMode": "notify-always",
+    "autoPullWhitelist": [],
+    "note": "auto-pull / apply только после явного да; пустой whitelist = никогда не тянуть автоматически"
+  },
+  "notify": {
+    "reportDir": "temp",
+    "delivery": "stdout+file"
+  },
+  "mcpPackageSources": [
+    {
+      "id": "local-mcp-distr",
+      "kind": "local-folder",
+      "path": "D:/хлам/1c/ИИ",
+      "note": "папки/zip вида YYYY_MM_DD MCP_Distr; credentials не хранить"
+    },
+    {
+      "id": "yadisk-mcp",
+      "kind": "yandex-disk",
+      "url": "https://disk.yandex.ru/d/iJJvouaNLQs1sQ",
+      "note": "после auth на vibecoding1c; пароли не в git"
+    },
+    {
+      "id": "vibecoding1c-mcpserver",
+      "kind": "download-page",
+      "url": "https://vibecoding1c.ru/mcpserver",
+      "action": "Скачать",
+      "note": "канон страницы загрузки; логин отдельно, не в манифесте"
+    }
+  ],
+  "repos": [
+    {
+      "id": "ai_rules_1c",
+      "localPath": "F:/AI_1C/upstream/ai_rules_1c",
+      "github": "comol/ai_rules_1c",
+      "prefer": "tag-or-commit",
+      "acceptInto": ["rules", "skills"]
+    },
+    {
+      "id": "cc-1c-skills",
+      "localPath": "F:/AI_1C/upstream/cc-1c-skills",
+      "github": "Nikolay-Shirokov/cc-1c-skills",
+      "prefer": "tag",
+      "acceptInto": ["skills"]
+    },
+    {
+      "id": "1c_mcp",
+      "localPath": "F:/AI_1C/upstream/1c_mcp",
+      "github": "vladimir-kharin/1c_mcp",
+      "prefer": "release",
+      "acceptInto": ["tools/mcp1c"]
+    },
+    {
+      "id": "vanessa-automation",
+      "localPath": "F:/AI_1C/upstream/vanessa-automation",
+      "github": "Pr-Mex/vanessa-automation",
+      "prefer": "release",
+      "acceptInto": ["tools/vanessa"]
+    },
+    {
+      "id": "code-index-mcp",
+      "localPath": "F:/AI_1C/upstream/code-index-mcp",
+      "github": "Regsorm/code-index-mcp",
+      "prefer": "release",
+      "acceptInto": ["docker/index"]
+    },
+    {
+      "id": "v8std",
+      "localPath": "F:/AI_1C/upstream/v8std",
+      "github": "zeegin/v8std",
+      "prefer": "tag-or-commit",
+      "acceptInto": ["docker/bsl"]
+    },
+    {
+      "id": "1c-formsserver",
+      "localPath": "F:/AI_1C/upstream/1c-formsserver",
+      "github": "desko77/1c-formsserver",
+      "prefer": "tag-or-commit",
+      "acceptInto": []
+    },
+    {
+      "id": "MCP_VypolnenieKoda",
+      "localPath": "F:/AI_1C/MCP_VypolnenieKoda",
+      "github": null,
+      "prefer": "release",
+      "acceptInto": ["tools/mcp1c"],
+      "note": "github заполнить после публикации fork"
+    }
+  ]
+}

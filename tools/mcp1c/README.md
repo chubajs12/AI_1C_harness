@@ -6,7 +6,7 @@
 | Файл | Что | Источник |
 |------|-----|----------|
 | `MCP_Сервер_v1_9_1.cfe` | расширение-«коробка»: HTTP-сервис `mcp_APIBackend`, протокол MCP, инструменты метаданных | [github.com/vladimir-kharin/1c_mcp](https://github.com/vladimir-kharin/1c_mcp), версия 1.9.1 (коммит `aff0c34`), собрано без изменений |
-| `MCP_ВыполнениеКода_v1_0_1.cfe` | расширение-компонент: `execute_code`, `execute_query` | собственная разработка (проекты Долея/Energy, 15.10.2026) |
+| `MCP_ВыполнениеКода_v1_0_1.cfe` | расширение-компонент: `execute_code`, `execute_query` | [github.com/chubajs12/MCP_VypolnenieKoda](https://github.com/chubajs12/MCP_VypolnenieKoda) (public), 1.0.1 |
 | `MCP_Установщик_v1_0_0.epf` | служебная обработка: записывает оба CFE расширениями без безопасного режима и завершает сеанс | собственная разработка |
 
 **Лицензия `MCP_Сервер`.** Автор — Владимир Харин (vladimir-kharin); в README репозитория указано «MIT License»
