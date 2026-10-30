@@ -148,9 +148,39 @@ upstream и MCP_VypolnenieKoda не убирай.
 
 Созданы `temp/README.md`, в `.gitignore` — `temp/*` с исключением README; в `AGENTS.md` п.13: временное → `harness/temp` или `projects/<PROJECT>/temp`, по завершении задачи удалять, мусор не коммитить. Пункт brief закрыт. Секреты не трогались. Коммит только файлов этого пункта — отдельно от dirty ревизии 1.4.x.
 
+### Вход GitHub
+
+Код устройства истек в 22:09 без подтверждения в браузере (`AUTH_TIMEOUT`). `gh` по-прежнему без рабочего токена. Публичный репозиторий не создан.
+
+## 30.10.2026 ~22:12 — перенос dolea/rostviplast/mirax отложен
+
+Пользователь: перенос контуров **после** настройки харнеса; сейчас **не** стартовать. Когда скажет «да»: выборочно под новый харнес; минимум — `tasks` в папке проекта, доработки в `*_src`, свежие выгрузки conf/ext, индексатор/граф в общую папку. **Никаких move** до явного «да». Зафиксировано в плане `docs/ai-harness-layout-plan.md` (этап 3a) и в brief.
+
+## 30.10.2026 ~22:13 — daily upstream release-check (queued)
+
+Дизайн: `docs/11_Upstream_релизы.md`. Манифест `scripts/upstream-watchlist.json`, скелет dry-run `scripts/check-upstream-releases.ps1`. Политика: notify always; auto-pull только whitelist + «да»; schedule не включать. Автопилот без «да» не делать. Перенос контуров не связан и не стартовал.
+
+## 30.10.2026 ~22:15 — C1C-16 gh auth (эта машина)
+
+Токен chubajs12 был invalid. Код BDFD-AA92 не завершился → перевыпуск **E30A-EF21**, URL https://github.com/login/device. Подтверждает worker bc-a84812de; токены в лог не писать.
+
+## 30.10.2026 ~22:17 — источники обновлений MCP в daily-check
+
+В `docs/11_Upstream_релизы.md` и `scripts/upstream-watchlist.json` (`mcpPackageSources`): `D:\хлам\1c\ИИ`, https://disk.yandex.ru/d/iJJvouaNLQs1sQ, https://vibecoding1c.ru/mcpserver → Скачать. Credentials не коммитить.
+
 ## Дальше
 
-- Дождаться входа `gh` (код устройства) и опубликовать `MCP_VypolnenieKoda`, затем ссылка в `tools/mcp1c/README.md` и `docs/03_MCP_1С.md`.
+- После auth: опубликовать `MCP_VypolnenieKoda`, remote harness, ссылка в `docs/03` / `tools/mcp1c`.
 - Папки `F:\AI_1C\upstream` и `F:\AI_1C\MCP_VypolnenieKoda` не удалять.
 - ПДн: нужен файл статьи и путь пустого блока. В этом чате их нет.
+- Upstream release-check — queued (дизайн+скелет есть; schedule/автопилот — после «да»).
+- Перенос dolea / rostviplast / mirax — **отложен** до «да» после настройки.
 - Остальной dirty харнес (1.4.6/1.4.7) по-прежнему без общего коммита.
+
+## 30.10.2026 ~23:10 — дожим energy + docs + cleanup
+
+- energy_ext_src / energy_mp_esks_src → `F:\AI_1C\projects\`; обвязка energy: PROJECT.md, tasks=34, env.local; граф+indexer на новые пути.
+- MCP_VypolnenieKoda: `build/` в .gitignore, убран из индекса.
+- docs/14_GitHub_и_upstream.md; brief обновлён под факт.
+- vpn Cursor junction: не удалось (файл занят процессом) — blocker.
+- bak-контейнеров не осталось.
