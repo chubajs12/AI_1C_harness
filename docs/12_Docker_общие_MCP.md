@@ -1,49 +1,67 @@
-# Общие Docker MCP линии 1С
+# Docker MCP линии 1С: три зоны
 
-Канон дистрибутива пакетов: `D:\хлам\1c\ИИ\YYYY_MM_DD MCP_Distr` (актуально `2026_10_21`), живая копия инструкций — `F:\MCP_Distr`. Секреты только в `F:\MCP_Distr\graph\.env` и `config.env` (не в git харнеса).
+Канон Docker Desktop — **три** compose‑проекта (не смешивать):
 
-## Общие контейнеры (не останавливать «заодно» под один проект)
+| Группа | Compose | Состав |
+|--------|---------|--------|
+| **1c** | `F:\MCP_Distr\compose-1c\docker-compose.yml` | Только общие MCP: help, ssl, templates, syntaxcheck, forms, v8std |
+| **codeindex** | `F:\MCP_Distr\compose-codeindex\docker-compose.yml` | Только `*_code_index` (dolea, mirax, rostviplast, energy, buh_demo, smallbusiness, …) |
+| **2graph** | `F:\MCP_Distr\graph\docker-compose.yml` | Только граф: `graph_mcp`, `graph_neo4j`, `graph_ollama`, `graph_registrar` |
 
-| Имя контейнера | Образ (канон после 27.09.2026) | Порт | Назначение |
-|----------------|--------------------------------|------|------------|
-| `syntaxcheck_mcp-1c` | `comol/1c_syntaxcheck_mcp:latest` | 8002 | синтаксис BSL |
-| `help_mcp-1c` | `comol/1c_help_mcp:light` | 8003 | справка платформы |
-| `templates_mcp-1c` | `comol/template-search-mcp:light` | 8004 | шаблоны / remember |
-| `graph_mcp` | `comol/1c_graph_metadata:light` | 8006 | граф метаданных |
-| `ssl_mcp-1c` | `comol/mcp_ssl_server:light` | 8008 | БСП |
-| `forms_mcp-1c` | `desko77/1c-formsserver:latest` | 8011 | Form.xml |
-| `v8std_mcp-1c` | `ghcr.io/zeegin/v8std-mcp:stable` | 18766 | стандарты v8std |
+**Запрещено:** класть `help_mcp` / прочие MCP в 2graph; класть `*_code_index` в 2graph.
 
-Compose-проект графа: **`2graph`** (`F:\MCP_Distr\graph\docker-compose.yml`). Также: `graph_neo4j` (7474/7687), `graph_ollama` (11434), `graph_registrar`.
+Секреты: `F:\MCP_Distr\compose-1c\env\*.env`, `F:\MCP_Distr\graph\.env` — не в git харнеса.
 
-Теги `*-beta` после 27.09.2026 не публикуются — обновление: `docker pull` канон-тега → `docker stop` → `docker rename …_backup_YYYYMMDD` → `docker run` с теми же `-e`/`-v`/`-p` (без `docker rm` чужих стеков).
+## Политика обновления
 
-## Данные / индексы
+1. `docker pull` / пересборка image.
+2. `docker compose -f <файл> up -d <service>` — контейнер **заменяется**, без кучи `*_bak`.
+3. Успешный старт → старые backup‑контейнеры `docker rm`.
+4. Переход comol `*-beta` → `light`/`latest` только с **новым** `LICENSE_KEY` (vibecoding1c). Иначе ключ на новых образах = Invalid/withdrawn.
 
-| Что | Путь на хосте |
-|-----|----------------|
-| Состояние графа + Neo4j | `F:\MCP_Distr\bases\graph_stable\` (`neo4j_data`, `mcp_state`) |
-| Ollama модели | `F:\MCP_Distr\bases\ollama` |
-| Help/docs индекс | `F:\MCP_Distr\bases\mcp_docs_beta` (том контейнера help) |
-| Индекс кода **проекта** | `F:\AI_1C\projects\<имя>\indexes\code-index\{home,conf,ext}` |
-| Сырцы для индекса/графа | `F:\AI_1C\projects\<имя>_src\conf` и `ext` (ro) |
+## 1c — общие MCP
 
-Индексатор кода — **свой** контейнер `<имя>_code_index` (не общий). Порты: dolea `8013`, rostviplast `8042`, mirax `8052`, energy `8041` (чужой контур — не трогать без задачи).
+| Контейнер | Порт | Роль |
+|-----------|------|------|
+| `syntaxcheck_mcp-1c` | 8002 | синтаксис BSL |
+| `help_mcp-1c` | 8003 | справка платформы |
+| `templates_mcp-1c` | 8004 | шаблоны / remember |
+| `ssl_mcp-1c` | 8008 | БСП |
+| `forms_mcp-1c` | 8011 | Form.xml |
+| `v8std_mcp-1c` | 18766 | стандарты v8std |
 
-## Граф: тома проектов (host → container)
+`docker compose -f F:\MCP_Distr\compose-1c\docker-compose.yml up -d`
 
-См. `F:\MCP_Distr\graph\docker-compose.yml`. После переноса линии 1С:
+## codeindex — индексаторы кода
 
-- dolea: `F:/AI_1C/projects/dolea_src/...`
-- rostviplast: `F:/AI_1C/projects/rostviplast_src/...`
-- mirax: `F:/AI_1C/projects/mirax_src/...`
-- energy (пока): `F:/AI_DeepSeek/AI_1C/projects/energy_ext_src/...`
+| Контейнер | Порт | Сырцы | Индекс |
+|-----------|------|-------|--------|
+| `dolea_code_index` | 8013 | `F:\AI_1C\projects\dolea_src` | `...\dolea\indexes\code-index` |
+| `rostviplast_code_index` | 8042 | `...\rostviplast_src` | `...\rostviplast\indexes\code-index` |
+| `mirax_code_index` | 8052 | `...\mirax_src` | `...\mirax\indexes\code-index` |
+| `energy_code_index` | 8041 | `F:\AI_DeepSeek\AI_1C\projects\energy_ext_src` | `F:\AI_1C\projects\energy\indexes\code-index` |
+| `buh_demo_code_index` | 8062 | `F:\AI_AstraCode\buh_demo_src` | `...\buh_demo\indexes\code-index` |
+| `smallbusiness_code_index` | 8061 | `F:\AI_AstraCode\SmallBusiness_demo_src` | `...\SmallBusiness_demo\indexes\code-index` |
 
-Реестр `project_id`: `F:\MCP_Distr\graph\registrar\projects.json`. Пересоздание только сервиса `mcp`:  
-`docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file F:\MCP_Distr\graph\.env up -d mcp`.
+`docker compose -f F:\MCP_Distr\compose-codeindex\docker-compose.yml up -d`  
+Переиндекс: `scripts\mcp\code-index\reindex.ps1` (демон не видит file events с Windows bind mount).
 
-## MCP 1С в базе (не Docker)
+## 2graph — только граф (+ GPU‑эмбеддинги)
 
-Компонент `MCP_ВыполнениеКода`: https://github.com/chubajs12/MCP_VypolnenieKoda  
-Коробка `MCP_Сервер`: https://github.com/vladimir-kharin/1c_mcp  
-Дистрибутив CFE/EPF: `F:\AI_1C\harness\tools\mcp1c`.
+| Контейнер | Порт | Роль |
+|-----------|------|------|
+| `graph_mcp` | 8006 | граф метаданных |
+| `graph_neo4j` | 7474 / 7687 | хранилище |
+| `graph_ollama` | 11434 | локальные эмбеддинги на GPU |
+| `graph_registrar` | — | дорегистрация `project_id` из `registrar/projects.json` |
+
+### Локальная модель на видеокарте
+
+1. `graph_ollama` (`ollama/ollama`) + volume `F:/MCP_Distr/bases/ollama` + NVIDIA device в compose.
+2. `graph_mcp` → `EMBEDDING_API_BASE=http://ollama:11434/v1`, модель `qwen3-embedding:0.6b`, `ENABLE_ROUTINE_EMBEDDINGS=true`.
+3. Эмбеддинги процедур идут **внутри** сети `2graph_default`, не в облако.
+4. Chat‑LLM в текущем compose не подключена — только embeddings.
+
+`docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file F:\MCP_Distr\graph\.env up -d`
+
+Реестр образов/источников: `docs/13_Docker_реестр_контейнеров.md`.
