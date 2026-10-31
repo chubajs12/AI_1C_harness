@@ -73,3 +73,29 @@
 | `F:\AI_Claude\buh_pryadchenko` → `F:\AI_1C\projects\buh_pryadchenko` | контур + scripts; MOVED.md |
 
 Скрипт прогона (временный): `F:\AI_1C\harness\temp\project-data-migrate-run.ps1`.
+
+## Verification 2026-10-31
+
+Повторная сверка legacy (`F:\AI_Claude\<p>\`, `F:\AI_DeepSeek\AI_1C\projects\<p>\`, `F:\AI_Cursor\<p>\` при наличии) с каноном `F:\AI_1C\projects\<p>\`. Исключены из сравнения: `tasks`, `*_src`, `indexes`, `kit`, `.git`, каталоги `.claude` (настройки агента, не данные контура). Файлы-секреты (`.env.local`, `.env` в legacy `scripts`) и заглушки `MOVED.md` в legacy не считаются GAP.
+
+| path | legacy-only file count | canonical count | status |
+|------|------------------------:|----------------:|--------|
+| `energy\ОЭК` | 0 | 2071 | OK |
+| `dolea\Инструкции` | 0 | 600 | OK |
+| `mirax\docs\reports` | 0 | 32 | OK |
+| `buh_pryadchenko` (wrapper: PROJECT.md, config, scripts, tasks, `.mcp.json`) | 0 | 14 | OK |
+| `dolea\docs` | 0 | 2 | OK |
+| `dolea\scripts` | 0 | 57 | OK |
+| `dolea\tools` | 0 | 468 | OK |
+| `mirax\docs` | 0 | 32 | OK |
+| `mirax\scripts` | 0 | 12 | OK |
+| `rostviplast\scripts` | 0 | 13 | OK |
+| `rostviplast\docs` | 0 (legacy: только `MOVED.md`) | 0 | OK |
+| `energy\scripts` | 0* | 528 | OK |
+| `energy\tools` | 0 | 6335 | OK |
+
+\* В `F:\AI_Claude\energy\scripts` остаются `MOVED.md` и устаревший `kit\build_agent_kit.py` (канон kit — харнес); в DeepSeek legacy — `.env` / `.env.local`, не переносятся.
+
+**MOVED.md** на месте: `F:\AI_Claude\energy\ОЭК`, `F:\AI_Claude\dolea\Инструкции`, `F:\AI_Claude\mirax\docs\reports`, `F:\AI_Claude\buh_pryadchenko`.
+
+**Robocopy:** не выполнялся (GAP по содержимому не выявлено).
