@@ -151,9 +151,9 @@ $lines.Add('')
 $lines.Add('## Docker images (compose groups, digest local)')
 $lines.Add('')
 $composeImages = @(
-    @{ g = '1c'; f = 'F:\MCP_Distr\compose-1c\docker-compose.yml' },
-    @{ g = '2graph'; f = 'F:\MCP_Distr\graph\docker-compose.yml' },
-    @{ g = '3codeindex'; f = 'F:\MCP_Distr\compose-codeindex\docker-compose.yml' }
+    @{ g = '1c'; f = 'F:\AI_1C\upstream\mcp\compose-1c\docker-compose.yml' },
+    @{ g = '2graph'; f = 'F:\AI_1C\upstream\mcp\graph\docker-compose.yml' },
+    @{ g = '3codeindex'; f = 'F:\AI_1C\upstream\mcp\compose-codeindex\docker-compose.yml' }
 )
 foreach ($c in $composeImages) {
     if (-not (Test-Path -LiteralPath $c.f)) { continue }

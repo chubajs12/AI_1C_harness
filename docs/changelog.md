@@ -1,5 +1,10 @@
 # Changelog (настройки агента)
 
+## 1.4.10 — 2026-10-31
+
+- Upstream layout: `F:\AI_1C\upstream\git\` + `upstream\mcp\` (бывший `F:\MCP_Distr`); `upstream/README.md`, отчет `docs/upstream-layout-migrate-2026-10-31.md`.
+- MCP_VypolnenieKoda: canonical `upstream/git/MCP_VypolnenieKoda`, worktree `projects/mcp-vypolnenie-koda_dev`, `docs/16`, `scripts/mcp/sync-mcp-vypolnenie-koda.ps1`, `scripts/git-sync-run.ps1`.
+
 ## 1.4.9 — 2026-10-31
 
 - Graph: `scripts/mcp/refresh_graph_project.py`, `scripts/mcp/refresh-graph-never-run.ps1` (обход кавычек PowerShell).
