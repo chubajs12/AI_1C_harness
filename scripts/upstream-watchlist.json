@@ -82,11 +82,11 @@
     },
     {
       "id": "MCP_VypolnenieKoda",
-      "localPath": "F:/AI_1C/MCP_VypolnenieKoda",
-      "github": null,
+      "localPath": "F:/AI_1C/upstream/git/MCP_VypolnenieKoda",
+      "github": "chubajs12/MCP_VypolnenieKoda",
       "prefer": "release",
       "acceptInto": ["tools/mcp1c"],
-      "note": "github заполнить после публикации fork"
+      "note": "deploy: scripts/mcp/sync-mcp-vypolnenie-koda.ps1; dev worktree projects/mcp-vypolnenie-koda_dev"
     }
   ]
 }

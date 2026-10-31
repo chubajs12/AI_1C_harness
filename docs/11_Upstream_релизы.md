@@ -8,7 +8,7 @@
 
 ## Что мониторить
 
-Клоны в `F:\AI_1C\upstream\` + локальный MCP-компонент:
+Клоны в `F:\AI_1C\upstream\git\` (+ Docker MCP в `upstream\mcp\`, см. `docs/12`):
 
 | Локальная папка | GitHub | Что сравнивать | Куда обычно «принимать» |
 |-----------------|--------|----------------|-------------------------|
@@ -19,7 +19,7 @@
 | `code-index-mcp` | Regsorm/code-index-mcp | release / tag | Docker/индекс линия |
 | `v8std` | zeegin/v8std | commit / tag | BSL LS / Docker |
 | `1c-formsserver` | desko77/1c-formsserver | commit / tag | по необходимости |
-| `F:\AI_1C\MCP_VypolnenieKoda` | (свой fork, когда появится remote) | release / tag | дистрибутив MCP 1С линии |
+| `F:\AI_1C\upstream\git\MCP_VypolnenieKoda` | chubajs12/MCP_VypolnenieKoda | release / tag / main | `sync-mcp-vypolnenie-koda.ps1` → `tools/mcp1c` |
 
 Образы Docker Hub без публичного git (graph/syntaxcheck и т.п.) — **вне** этого контура; отдельный чеклист digest’ов при необходимости.
 
@@ -33,7 +33,7 @@
 | https://disk.yandex.ru/d/iJJvouaNLQs1sQ | Яндекс.Диск (публичная/шара) | После auth на vibecoding1c; пароли/токены сюда не класть |
 | https://vibecoding1c.ru/mcpserver | сайт → **Скачать** | Каноническая страница загрузки MCP Server; логин отдельно |
 
-Локальный git-компонент линии: `F:\AI_1C\MCP_VypolnenieKoda` (свой репозиторий, когда будет remote). Upstream-коробка: `1c_mcp` (vladimir-kharin) — см. таблицу выше.
+Компонент линии: `upstream\git\MCP_VypolnenieKoda` (dev worktree — `projects\mcp-vypolnenie-koda_dev`, см. `docs/16`). Upstream-коробка: `1c_mcp` (vladimir-kharin).
 
 Манифест для скрипта: `scripts/upstream-watchlist.json` (см. скелет). MCP-пакетные источники — блок `mcpPackageSources` в том же JSON.
 
@@ -90,5 +90,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File F:\AI_1C\harness\scripts\reg
 
 - Скрипт: `scripts/check-upstream-releases.ps1`
 - Список: `scripts/upstream-watchlist.json`
-- Клоны: `F:\AI_1C\upstream\`
+- Клоны: `F:\AI_1C\upstream\git\`
 - Перенос dolea/rostviplast/mirax — **не** связан с этим требованием и по-прежнему отложен.

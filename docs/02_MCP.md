@@ -5,7 +5,7 @@ MCP-серверы — инструменты агента: поиск по ко
 (единственный контейнер, который заводится под проект). MCP 1С (HTTP-сервис расширения в базе) и Vanessa — тоже MCP,
 но живут в 1С: первый — в публикации IIS базы проекта, второй — в сеансе TestManager.
 
-Описания серверов дистрибутива (установка, параметры, лицензии) — `docs/mcp-servers/` (из `F:\MCP_Distr\docs`).
+Описания серверов дистрибутива (установка, параметры, лицензии) — `docs/mcp-servers/` (из `F:\AI_1C\upstream\mcp\docs`).
 
 ## 1. Сводная таблица
 
@@ -87,11 +87,11 @@ scripts\mcp\code-index\reindex.ps1 -Repos ext,conf   # после выгрузк
 
 Подключение нового проекта — **изменение общей инфраструктуры, только с согласия пользователя**:
 
-1. В `F:\MCP_Distr\graph\docker-compose.yml` (сервис `mcp`, `volumes`) добавить монтирование выгрузок только на чтение:
+1. В `F:\AI_1C\upstream\mcp\graph\docker-compose.yml` (сервис `mcp`, `volumes`) добавить монтирование выгрузок только на чтение:
    `- "F:/AI_1C/projects/<проект>_src/conf:/app/<проект>_conf:ro"` и `.../ext:/app/<проект>_ext:ro`.
-2. Пересоздать только сервис графа: `docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file
-   F:\MCP_Distr\graph\.env up -d mcp` (секреты лицензии — в `.env`, не публиковать). Граф недоступен ~3 минуты для всех.
-3. В `F:\MCP_Distr\graph\registrar\projects.json` добавить
+2. Пересоздать только сервис графа: `docker compose -f F:\AI_1C\upstream\mcp\graph\docker-compose.yml --env-file
+   F:\AI_1C\upstream\mcp\graph\.env up -d mcp` (секреты лицензии — в `.env`, не публиковать). Граф недоступен ~3 минуты для всех.
+3. В `F:\AI_1C\upstream\mcp\graph\registrar\projects.json` добавить
    `{ "project_id": "<Project>Conf", "configuration_root": "/app/<проект>_conf" }` и то же для Ext — сервис
    `graph_registrar` раз в минуту дорегистрирует проекты (реестр живет в памяти `graph_mcp` и теряется при рестарте).
 4. Построить индекс: `refresh_graph_project` с `project_id` и уникальным `operation_id` (например, uuid4). У сервера
