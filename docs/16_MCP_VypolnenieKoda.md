@@ -16,7 +16,7 @@
 
 ## Поток разработки
 
-1. Открыть в Cursor `F:\AI_1C\projects\mcp-vypolnenie-koda_dev` (ветка `develop`).
+1. Открыть в Cursor `F:\AI_1C\projects\mcp-vypolnenie-koda\MCP_VypolnenieKoda.dev.code-workspace` (ветка `develop` в корне `mcp-vypolnenie-koda_dev`).
 2. Правки в `src/`, сборка CFE в `build/` (Конфигуратор Full → UpdateDB → DumpCfg; `build/` не в git).
 3. Commit + push `origin develop`.
 4. Merge `develop` → `main` на GitHub (review).
