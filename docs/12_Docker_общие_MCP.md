@@ -4,13 +4,13 @@
 
 | Группа | Compose | Состав |
 |--------|---------|--------|
-| **1c** | `F:\MCP_Distr\compose-1c\docker-compose.yml` | Только общие MCP: help, ssl, templates, syntaxcheck, forms, v8std |
-| **3codeindex** | `F:\MCP_Distr\compose-codeindex\docker-compose.yml` | Только `*_code_index` (dolea, mirax, rostviplast, energy, buh_demo, smallbusiness, …) |
-| **2graph** | `F:\MCP_Distr\graph\docker-compose.yml` | Только граф: `graph_mcp`, `graph_neo4j`, `graph_ollama`, `graph_registrar` |
+| **1c** | `F:\AI_1C\upstream\mcp\compose-1c\docker-compose.yml` | Только общие MCP: help, ssl, templates, syntaxcheck, forms, v8std |
+| **3codeindex** | `F:\AI_1C\upstream\mcp\compose-codeindex\docker-compose.yml` | Только `*_code_index` (dolea, mirax, rostviplast, energy, buh_demo, smallbusiness, …) |
+| **2graph** | `F:\AI_1C\upstream\mcp\graph\docker-compose.yml` | Только граф: `graph_mcp`, `graph_neo4j`, `graph_ollama`, `graph_registrar` |
 
 **Запрещено:** класть `help_mcp` / прочие MCP в 2graph; класть `*_code_index` в 2graph.
 
-Секреты: `F:\MCP_Distr\compose-1c\env\*.env`, `F:\MCP_Distr\graph\.env` — не в git харнеса.
+Секреты: `F:\AI_1C\upstream\mcp\compose-1c\env\*.env`, `F:\AI_1C\upstream\mcp\graph\.env` — не в git харнеса.
 
 ## Политика обновления
 
@@ -30,7 +30,7 @@
 | `forms_mcp-1c` | 8011 | Form.xml |
 | `v8std_mcp-1c` | 18766 | стандарты v8std |
 
-`docker compose -f F:\MCP_Distr\compose-1c\docker-compose.yml up -d`
+`docker compose -f F:\AI_1C\upstream\mcp\compose-1c\docker-compose.yml up -d`
 
 ## 3codeindex — индексаторы кода
 
@@ -43,7 +43,7 @@
 | `buh_demo_code_index` | 8062 | `F:\AI_AstraCode\buh_demo_src` | `...\buh_demo\indexes\code-index` |
 | `smallbusiness_code_index` | 8061 | `F:\AI_AstraCode\SmallBusiness_demo_src` | `...\SmallBusiness_demo\indexes\code-index` |
 
-`docker compose -f F:\MCP_Distr\compose-codeindex\docker-compose.yml up -d`  
+`docker compose -f F:\AI_1C\upstream\mcp\compose-codeindex\docker-compose.yml up -d`  
 Переиндекс: `scripts\mcp\code-index\reindex.ps1` (демон не видит file events с Windows bind mount).
 
 ## 2graph — только граф (+ GPU‑эмбеддинги)
@@ -57,12 +57,12 @@
 
 ### Локальная модель на видеокарте
 
-1. `graph_ollama` (`ollama/ollama`) + volume `F:/MCP_Distr/bases/ollama` + NVIDIA device в compose.
+1. `graph_ollama` (`ollama/ollama`) + volume `F:/AI_1C/upstream/mcp/bases/ollama` + NVIDIA device в compose.
 2. `graph_mcp` → `EMBEDDING_API_BASE=http://ollama:11434/v1`, модель `qwen3-embedding:0.6b`, `ENABLE_ROUTINE_EMBEDDINGS=true`.
 3. Эмбеддинги процедур идут **внутри** сети `2graph_default`, не в облако.
 4. Chat‑LLM в текущем compose не подключена — только embeddings.
 
-`docker compose -f F:\MCP_Distr\graph\docker-compose.yml --env-file F:\MCP_Distr\graph\.env up -d`
+`docker compose -f F:\AI_1C\upstream\mcp\graph\docker-compose.yml --env-file F:\AI_1C\upstream\mcp\graph\.env up -d`
 
 Реестр образов/источников: `docs/13_Docker_реестр_контейнеров.md`.
 

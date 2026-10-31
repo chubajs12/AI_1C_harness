@@ -5,14 +5,14 @@
 | Что | URL |
 |-----|-----|
 | Harness 1С | https://github.com/chubajs12/AI_1C_harness |
-| MCP_ВыполнениеКода | https://github.com/chubajs12/MCP_VypolnenieKoda |
+| MCP_VypolnenieKoda | https://github.com/chubajs12/MCP_VypolnenieKoda |
 | Harness Apps (не‑1С) | https://github.com/chubajs12/AI_Apps_harness |
 
-Локально: `F:\AI_1C\harness`, `F:\AI_1C\MCP_VypolnenieKoda`, `F:\AI_Apps\harness`.
+Локально: `F:\AI_1C\harness`, `F:\AI_Apps\harness`. Каталог upstream — `F:\AI_1C\upstream\` (`README.md`: `git/` vs `mcp/`).
 
-В `MCP_VypolnenieKoda` каталог `build/` в git **не** коммитить (см. `.gitignore`).
+В `MCP_VypolnenieKoda` каталог `build/` в git **не** коммитить (см. `.gitignore`). Разработка и deploy — `docs/16_MCP_VypolnenieKoda.md`.
 
-## Клоны `F:\AI_1C\upstream\*`
+## Клоны `F:\AI_1C\upstream\git\*`
 
 | Папка | origin | Назначение | Обновление |
 |-------|--------|------------|------------|
@@ -23,6 +23,7 @@
 | `code-index-mcp` | https://github.com/Regsorm/code-index-mcp.git | bsl-indexer | release → bump `BSL_INDEXER_VERSION` / rebuild `*-code-index` |
 | `v8std` | https://github.com/zeegin/v8std.git | стандарты | tag; образ `ghcr.io/zeegin/v8std-mcp` |
 | `vanessa-automation` | https://github.com/Pr-Mex/vanessa-automation.git | Vanessa | **release** → `tools/vanessa` |
+| `MCP_VypolnenieKoda` | https://github.com/chubajs12/MCP_VypolnenieKoda.git | `execute_code` / `execute_query` | merge `main` → `sync-mcp-vypolnenie-koda.ps1` → `tools/mcp1c` |
 
 ## Daily check
 
