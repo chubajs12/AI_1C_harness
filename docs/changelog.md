@@ -1,5 +1,9 @@
 # Changelog (настройки агента)
 
+## 1.4.11 — 2026-11-01
+
+- Правило `rules/verify-before-reply.md`: сверка ответа с арtefact, дожим FAIL/blocker, Vanessa/PMI только по отчетам; ссылка в `AGENTS.md` (п. 2 и антипаттерны).
+
 ## 1.4.10 — 2026-10-31
 
 - Upstream layout: `F:\AI_1C\upstream\git\` + `upstream\mcp\` (бывший `F:\MCP_Distr`); `upstream/README.md`, отчет `docs/upstream-layout-migrate-2026-10-31.md`.
