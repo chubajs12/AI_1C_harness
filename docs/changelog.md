@@ -1,5 +1,9 @@
 # Changelog (настройки агента)
 
+## 1.4.12 — 2026-11-01
+
+- Методика Vanessa: `rules/vanessa-testing-methodology.md` (полный/частичный цикл, MCP 1С, протоколы, блоки); ссылки в `verify-before-reply.md` и `AGENTS.md` (п. 2).
+
 ## 1.4.11 — 2026-11-01
 
 - Правило `rules/verify-before-reply.md`: сверка ответа с арtefact, дожим FAIL/blocker, Vanessa/PMI только по отчетам; ссылка в `AGENTS.md` (п. 2 и антипаттерны).
