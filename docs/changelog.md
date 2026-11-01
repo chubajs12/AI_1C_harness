@@ -1,5 +1,9 @@
 # Changelog (настройки агента)
 
+## 1.4.13 — 2026-11-01
+
+- `scripts/1c/check-yo.py`: «ё/Ё» запрещена в коде BSL и XML; в `//` и `/* */` комментариях BSL — допустима. Вызов из `designer.ps1` перед Load расширения. Правило п. 6 в `AGENTS.md`.
+
 ## 1.4.12 — 2026-11-01
 
 - Методика Vanessa: `rules/vanessa-testing-methodology.md` (полный/частичный цикл, MCP 1С, протоколы, блоки); ссылки в `verify-before-reply.md` и `AGENTS.md` (п. 2).
