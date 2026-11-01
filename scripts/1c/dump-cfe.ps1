@@ -1,6 +1,7 @@
 ﻿# Выгрузка расширения из базы в CFE: BUILD_DIR\<EXT_FILE_NAME>\<PROJECT>_<EXT_FILE_NAME>_vX_Y_Z.cfe.
 # Версия — из <Version> EXT_DIR\Configuration.xml (или -Version). Прошлый CFE переносится в old\, VERSION обновляется.
 # Запускать после Full Load + CheckModules + UpdateDB: CFE — то, что реально стоит в базе.
+# Копия на диск обмена (Energy G:\): только scripts\1c\copy-cfe-release.ps1 — не Copy-Item -Force (rules/cfe-version-g-drive.md).
 param(
     [string]$Version = '',
     [string]$EnvFile = ''

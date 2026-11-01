@@ -18,6 +18,7 @@
 
 ## Связанные документы
 
+- CFE / `G:\` / SemVer при отдаче (Energy ОЭК_ШСЮ): `rules/cfe-version-g-drive.md`.
 - Жесткие гейты: `AGENTS.md` п. 1.10, п. 3, п. 6.
 - Цикл Vanessa (прогон, MCP 1С, протоколы, блоки): `rules/vanessa-testing-methodology.md`.
 - Мягкая сдача и отчет: `rules/verification-delivery.md`.
