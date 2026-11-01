@@ -1,5 +1,21 @@
 # Changelog (настройки агента)
 
+## 1.4.14 — 2026-11-01
+
+- Политика CFE / `G:\` для Energy ОЭК_ШСЮ: `rules/cfe-version-g-drive.md`, п. 8.1 в `docs/05_Цикл_доработки_расширения.md`, п. 1.14 `AGENTS.md`; `scripts/1c/copy-cfe-release.ps1` (без перезаписи отданной версии).
+
+## 1.4.13 — 2026-11-01
+
+- `scripts/1c/check-yo.py`: «ё/Ё» запрещена в коде BSL и XML; в `//` и `/* */` комментариях BSL — допустима. Вызов из `designer.ps1` перед Load расширения. Правило п. 6 в `AGENTS.md`.
+
+## 1.4.12 — 2026-11-01
+
+- Методика Vanessa: `rules/vanessa-testing-methodology.md` (полный/частичный цикл, MCP 1С, протоколы, блоки); ссылки в `verify-before-reply.md` и `AGENTS.md` (п. 2).
+
+## 1.4.11 — 2026-11-01
+
+- Правило `rules/verify-before-reply.md`: сверка ответа с арtefact, дожим FAIL/blocker, Vanessa/PMI только по отчетам; ссылка в `AGENTS.md` (п. 2 и антипаттерны).
+
 ## 1.4.10 — 2026-10-31
 
 - Upstream layout: `F:\AI_1C\upstream\git\` + `upstream\mcp\` (бывший `F:\MCP_Distr`); `upstream/README.md`, отчет `docs/upstream-layout-migrate-2026-10-31.md`.

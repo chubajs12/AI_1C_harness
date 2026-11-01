@@ -62,6 +62,8 @@ if ($Action -eq 'Load') {
         if ($LASTEXITCODE -ne 0) { throw 'sort-configuration-objects.py завершился с ошибкой' }
         & python (Join-Path $PSScriptRoot 'uuid-check.py') $ConfigDir
         if ($LASTEXITCODE -ne 0) { throw 'Проверка UUID не пройдена — загрузка остановлена (uuid-check.py --fix исправит фиктивные)' }
+        & python (Join-Path $PSScriptRoot 'check-yo.py') $ConfigDir
+        if ($LASTEXITCODE -ne 0) { throw 'Проверка «ё» не пройдена — загрузка остановлена (check-yo.py: ё только в // и /* */ комментариях BSL)' }
     }
 }
 
