@@ -1,5 +1,9 @@
 # Changelog (настройки агента)
 
+## 1.4.15 — 2026-11-02
+
+- Канон «довести задачу до конца, сверять с запросом»: `docs/agent-workflow.md` (цикл до совпадения с DoD, не бросать задачу, маркер `FINISHED` в `tasks/…/log.md`); ссылки в `AGENTS.md` п. 7, `rules/verify-before-reply.md`, `README.md`, шаблон `tasks/_template/log.md`.
+
 ## 1.4.14 — 2026-11-01
 
 - Политика CFE / `G:\` для Energy ОЭК_ШСЮ: `rules/cfe-version-g-drive.md`, п. 8.1 в `docs/05_Цикл_доработки_расширения.md`, п. 1.14 `AGENTS.md`; `scripts/1c/copy-cfe-release.ps1` (без перезаписи отданной версии).
