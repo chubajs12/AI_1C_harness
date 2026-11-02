@@ -1,0 +1,76 @@
+{
+  "description": "Канон портов линии 1С на одной машине. PROJECT + HARNESS_ROOT в project.env.local; числа подставляет kitenv.",
+  "version": 1,
+  "updated": "2026-11-02",
+  "shared": {
+    "mcp_host": "127.0.0.1",
+    "docker_mcp": {
+      "syntax_checker": 8002,
+      "docs": 8003,
+      "templates": 8004,
+      "graph": 8006,
+      "ssl": 8008,
+      "forms": 8011,
+      "v8std": 18766
+    },
+    "mcp1c_iis": {
+      "site": "1c_mcp",
+      "port": 8095,
+      "iis_root": "C:\\inetpub\\1c_mcp"
+    },
+    "cluster": {
+      "agent": "localhost:1540",
+      "ras_ephemeral": 1545
+    }
+  },
+  "reserved_external": [
+    {
+      "id": "smallbusiness_demo",
+      "note": "Не останавливать без явной просьбы; чужой контур AI_AstraCode",
+      "vanessa_mcp_port": 9880,
+      "vanessa_tc_port": 1539
+    },
+    {
+      "id": "buh_demo",
+      "note": "F:\\AI_AstraCode\\buh_demo",
+      "vanessa_mcp_port": 9881
+    }
+  ],
+  "projects": {
+    "energy": {
+      "label": "ОЭК ERP Energy",
+      "vanessa_mcp_port": 9874,
+      "vanessa_tc_port": 1538,
+      "code_index_port": 8041,
+      "mcp1c_app": "oek_ext",
+      "graph_project_conf": "EnergyConf",
+      "graph_project_ext": "EnergyExt"
+    },
+    "dolea": {
+      "label": "Dolea UT (dolea_ut_claud)",
+      "vanessa_mcp_port": 9875,
+      "vanessa_tc_port": 1542,
+      "code_index_port": 8013,
+      "mcp1c_app": "dolea_ut_claud",
+      "graph_project_conf": "Dolea",
+      "graph_project_ext": "Dolea"
+    },
+    "mirax": {
+      "label": "MIRAX",
+      "vanessa_mcp_port": 9882,
+      "vanessa_tc_port": 1543,
+      "code_index_port": 8052,
+      "mcp1c_app": "mirax",
+      "graph_project_conf": "MiraxConf",
+      "graph_project_ext": "MiraxExt"
+    },
+    "rostviplast": {
+      "label": "Rostviplast",
+      "vanessa_mcp_port": 9883,
+      "vanessa_tc_port": 1544,
+      "code_index_port": 8042,
+      "graph_project_conf": "RostviplastConf",
+      "graph_project_ext": "RostviplastExt"
+    }
+  }
+}

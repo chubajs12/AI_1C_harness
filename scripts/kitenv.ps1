@@ -22,7 +22,47 @@ function Get-KitEnv {
         $vals[$k.Trim().TrimStart([char]0xFEFF)] = $v.Trim()
     }
     $vals['ENV_FILE'] = $EnvFile
-    return $vals
+    return Merge-KitPortsFromRegistry $vals
+}
+
+function Get-KitPortsRegistryPath {
+    param([hashtable]$Cfg)
+    if ($Cfg['HARNESS_PORTS_REGISTRY']) { return $Cfg['HARNESS_PORTS_REGISTRY'] }
+    $root = if ($Cfg['HARNESS_ROOT']) { $Cfg['HARNESS_ROOT'] } else { Get-KitRoot }
+    return Join-Path $root 'config\ports-registry.json'
+}
+
+function Merge-KitPortsFromRegistry {
+    # Числовые порты и graph/mcp1c app — из config/ports-registry.json по ключу PROJECT (не дублировать в project.env.local).
+    param([hashtable]$Cfg)
+    $path = Get-KitPortsRegistryPath $Cfg
+    if (-not (Test-Path -LiteralPath $path)) { return $Cfg }
+    try {
+        $reg = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+    } catch {
+        Write-Warning "ports-registry: не прочитан $path — $($_.Exception.Message)"
+        return $Cfg
+    }
+    $proj = $Cfg['PROJECT']
+    if (-not $proj -or -not $reg.projects.PSObject.Properties[$proj]) { return $Cfg }
+    $p = $reg.projects.$proj
+    $map = [ordered]@{
+        VANESSA_MCP_PORT     = 'vanessa_mcp_port'
+        VANESSA_TC_PORT      = 'vanessa_tc_port'
+        CODE_INDEX_PORT      = 'code_index_port'
+        MCP1C_APP            = 'mcp1c_app'
+        GRAPH_PROJECT_CONF   = 'graph_project_conf'
+        GRAPH_PROJECT_EXT    = 'graph_project_ext'
+    }
+    foreach ($envKey in $map.Keys) {
+        $regKey = $map[$envKey]
+        if ($null -ne $p.$regKey) { $Cfg[$envKey] = [string]$p.$regKey }
+    }
+    if ($reg.shared.mcp1c_iis.port) { $Cfg['MCP1C_PORT'] = [string]$reg.shared.mcp1c_iis.port }
+    if ($reg.shared.mcp_host -and -not $Cfg['MCP_HOST']) { $Cfg['MCP_HOST'] = $reg.shared.mcp_host }
+    $Cfg['HARNESS_PORTS_REGISTRY'] = $path
+    $Cfg['HARNESS_PORTS_REGISTRY_PROJECT'] = $proj
+    return $Cfg
 }
 
 function Get-KitIbArgs {

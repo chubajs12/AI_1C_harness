@@ -9,6 +9,22 @@ function Add-Row([string]$What, [string]$State, [string]$Note) { $rows.Add([pscu
 
 try { $cfg = Get-KitEnv -EnvFile $EnvFile } catch { Write-Host $_.Exception.Message -ForegroundColor Red; exit 1 }
 Add-Row 'параметры' 'OK' $cfg['ENV_FILE']
+$regPath = Get-KitPortsRegistryPath $cfg
+if (Test-Path -LiteralPath $regPath) {
+    Add-Row 'ports-registry' 'OK' "$regPath (project=$($cfg['HARNESS_PORTS_REGISTRY_PROJECT']))"
+    $rawPortKeys = @{}
+    foreach ($line in [IO.File]::ReadAllLines($cfg['ENV_FILE'], [Text.Encoding]::UTF8)) {
+        if ($line -match '^\s*#' -or $line -notmatch '=') { continue }
+        $k = ($line -split '=', 2)[0].Trim().TrimStart([char]0xFEFF)
+        if ($k -in @('VANESSA_MCP_PORT', 'VANESSA_TC_PORT', 'CODE_INDEX_PORT', 'MCP1C_PORT')) { $rawPortKeys[$k] = $true }
+    }
+    if ($rawPortKeys.Count -gt 0) {
+        Add-Row 'дубли портов в env' 'WARN' ("убрать из project.env.local — канон $($regPath): " + ($rawPortKeys.Keys -join ', '))
+    }
+    Add-Row 'Vanessa (реестр)' 'OK' "MCP $($cfg['VANESSA_MCP_PORT']) / TC $($cfg['VANESSA_TC_PORT'])"
+} else {
+    Add-Row 'ports-registry' 'WARN' "нет $regPath"
+}
 $empty = @($cfg.Keys | Where-Object { $cfg[$_] -match '^<.*>$' })
 if ($empty) { Add-Row 'незаполненные параметры' 'FAIL' ($empty -join ', ') }
 

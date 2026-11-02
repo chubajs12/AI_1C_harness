@@ -7,6 +7,7 @@
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 from pathlib import Path
@@ -30,7 +31,49 @@ def env(path: str | Path | None = None) -> dict[str, str]:
         k, v = line.split("=", 1)
         vals[k.strip()] = v.strip()
     vals["ENV_FILE"] = str(p)
-    return vals
+    return merge_ports_from_registry(vals)
+
+
+def _ports_registry_path(cfg: dict[str, str]) -> Path:
+    if cfg.get("HARNESS_PORTS_REGISTRY"):
+        return Path(cfg["HARNESS_PORTS_REGISTRY"])
+    root = Path(cfg["HARNESS_ROOT"]) if cfg.get("HARNESS_ROOT") else KIT_ROOT
+    return root / "config" / "ports-registry.json"
+
+
+def merge_ports_from_registry(cfg: dict[str, str]) -> dict[str, str]:
+    path = _ports_registry_path(cfg)
+    if not path.is_file():
+        return cfg
+    try:
+        reg = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (json.JSONDecodeError, OSError):
+        return cfg
+    proj = cfg.get("PROJECT")
+    projects = reg.get("projects") or {}
+    if not proj or proj not in projects:
+        return cfg
+    p = projects[proj]
+    mapping = {
+        "VANESSA_MCP_PORT": "vanessa_mcp_port",
+        "VANESSA_TC_PORT": "vanessa_tc_port",
+        "CODE_INDEX_PORT": "code_index_port",
+        "MCP1C_APP": "mcp1c_app",
+        "GRAPH_PROJECT_CONF": "graph_project_conf",
+        "GRAPH_PROJECT_EXT": "graph_project_ext",
+    }
+    for env_key, reg_key in mapping.items():
+        if reg_key in p and p[reg_key] is not None:
+            cfg[env_key] = str(p[reg_key])
+    shared = reg.get("shared") or {}
+    mcp1c = shared.get("mcp1c_iis") or {}
+    if mcp1c.get("port") is not None:
+        cfg["MCP1C_PORT"] = str(mcp1c["port"])
+    if shared.get("mcp_host") and not cfg.get("MCP_HOST"):
+        cfg["MCP_HOST"] = str(shared["mcp_host"])
+    cfg["HARNESS_PORTS_REGISTRY"] = str(path)
+    cfg["HARNESS_PORTS_REGISTRY_PROJECT"] = proj
+    return cfg
 
 
 def mcp1c_url(cfg: dict[str, str]) -> str:
