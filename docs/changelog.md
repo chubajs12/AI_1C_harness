@@ -1,5 +1,9 @@
 # Changelog (настройки агента)
 
+## 1.4.17 — 2026-11-02
+
+- `docs/00_Подключить_проект.md`: раздел Cursor Project (указатели на шину и MCP, без копии в проект); `scripts/new-project.ps1` — тот же текст в шаблоне `PROJECT.md`.
+
 ## 1.4.16 — 2026-11-02
 
 - Шина Project-чатов в харнесе: `coordination/README.md`, пустые `coordination/inbox/{energy,dolea,harness}.jsonl`, `scripts/coordination/append-inbox.ps1` и `read-inbox.ps1`. Проект протокол не копирует.
