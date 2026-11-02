@@ -29,18 +29,38 @@ function Get-KitPortsRegistryPath {
     param([hashtable]$Cfg)
     if ($Cfg['HARNESS_PORTS_REGISTRY']) { return $Cfg['HARNESS_PORTS_REGISTRY'] }
     $root = if ($Cfg['HARNESS_ROOT']) { $Cfg['HARNESS_ROOT'] } else { Get-KitRoot }
+    $yaml = Join-Path $root 'config\ports-registry.yaml'
+    if (Test-Path -LiteralPath $yaml) { return $yaml }
     return Join-Path $root 'config\ports-registry.json'
 }
 
+function Read-KitPortsRegistry {
+    param([string]$Path)
+    $dir = Split-Path $Path -Parent
+    $jsonPath = Join-Path $dir 'ports-registry.json'
+    $loader = Join-Path (Get-KitRoot) 'scripts\ports-registry-load.py'
+    if ($Path -match '\.ya?ml$' -and (Test-Path -LiteralPath $loader) -and (Get-Command python -ErrorAction SilentlyContinue)) {
+        $out = & python $loader $Path 2>$null
+        if ($LASTEXITCODE -eq 0 -and $out) { return ($out | ConvertFrom-Json) }
+    }
+    if (Test-Path -LiteralPath $jsonPath) {
+        return Get-Content -LiteralPath $jsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    }
+    if ($Path -match '\.(json)$') {
+        return Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json
+    }
+    throw "ports-registry: нет $jsonPath и yaml не прочитан ($Path)"
+}
+
 function Merge-KitPortsFromRegistry {
-    # Числовые порты и graph/mcp1c app — из config/ports-registry.json по ключу PROJECT (не дублировать в project.env.local).
+    # Числовые порты и graph/mcp1c app — из config/ports-registry.yaml (канон) по PROJECT.
     param([hashtable]$Cfg)
     $path = Get-KitPortsRegistryPath $Cfg
     if (-not (Test-Path -LiteralPath $path)) { return $Cfg }
     try {
-        $reg = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+        $reg = Read-KitPortsRegistry $path
     } catch {
-        Write-Warning "ports-registry: не прочитан $path — $($_.Exception.Message)"
+        Write-Warning "ports-registry: $($_.Exception.Message)"
         return $Cfg
     }
     $proj = $Cfg['PROJECT']

@@ -13,6 +13,22 @@ param(
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '..\kitenv.ps1')
 $cfg = Get-KitEnv -EnvFile $EnvFile
+if (-not $cfg['VANESSA_MCP_PORT'] -or -not $cfg['VANESSA_TC_PORT']) {
+    $regFile = if ($cfg['HARNESS_PORTS_REGISTRY']) { $cfg['HARNESS_PORTS_REGISTRY'] } else {
+        Join-Path ($(if ($cfg['HARNESS_ROOT']) { $cfg['HARNESS_ROOT'] } else { (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path })) 'config\ports-registry.json'
+    }
+    if (Test-Path -LiteralPath $regFile) {
+        $reg = Get-Content -LiteralPath $regFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        $p = $reg.projects.($cfg['PROJECT'])
+        if ($p) {
+            $cfg['VANESSA_MCP_PORT'] = [string]$p.vanessa_mcp_port
+            $cfg['VANESSA_TC_PORT'] = [string]$p.vanessa_tc_port
+        }
+    }
+}
+if (-not $cfg['VANESSA_MCP_PORT'] -or -not $cfg['VANESSA_TC_PORT']) {
+    throw "VANESSA_MCP_PORT/VANESSA_TC_PORT пусты — PROJECT=$($cfg['PROJECT']), ports-registry"
+}
 
 $v8c = $cfg['PLATFORM_THIN']
 $epf = $cfg['VANESSA_EPF']

@@ -38,16 +38,29 @@ def _ports_registry_path(cfg: dict[str, str]) -> Path:
     if cfg.get("HARNESS_PORTS_REGISTRY"):
         return Path(cfg["HARNESS_PORTS_REGISTRY"])
     root = Path(cfg["HARNESS_ROOT"]) if cfg.get("HARNESS_ROOT") else KIT_ROOT
+    yaml_path = root / "config" / "ports-registry.yaml"
+    if yaml_path.is_file():
+        return yaml_path
     return root / "config" / "ports-registry.json"
+
+
+def _load_ports_registry(path: Path) -> dict | None:
+    if not path.is_file():
+        return None
+    if path.suffix.lower() in (".yaml", ".yml"):
+        import yaml
+
+        return yaml.safe_load(path.read_text(encoding="utf-8-sig"))
+    try:
+        return json.loads(path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError:
+        return None
 
 
 def merge_ports_from_registry(cfg: dict[str, str]) -> dict[str, str]:
     path = _ports_registry_path(cfg)
-    if not path.is_file():
-        return cfg
-    try:
-        reg = json.loads(path.read_text(encoding="utf-8-sig"))
-    except (json.JSONDecodeError, OSError):
+    reg = _load_ports_registry(path)
+    if not reg:
         return cfg
     proj = cfg.get("PROJECT")
     projects = reg.get("projects") or {}

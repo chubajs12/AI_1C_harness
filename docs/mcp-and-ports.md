@@ -1,6 +1,7 @@
 # MCP и порты: канон харнеса
 
-Один файл назначения портов на машине: [config/ports-registry.json](../config/ports-registry.json).  
+Канон портов: [config/ports-registry.yaml](../config/ports-registry.yaml) (редактировать YAML).  
+Зеркало для скриптов без Python: `config/ports-registry.json` (синхронизировать: `python scripts/ports-registry-load.py config/ports-registry.yaml > config/ports-registry.json` через write_text в UTF-8).  
 В `F:\AI_1C\projects\<имя>\config\project.env.local` задают **PROJECT**, базу, секреты и пути; **числа портов Vanessa, code-index, MCP 1С (IIS) и graph project_id** подставляет `Get-KitEnv` / `kitenv.env()` из реестра.
 
 ## Контур (как устроено)

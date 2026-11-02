@@ -1,5 +1,4 @@
 {
-  "description": "Канон портов линии 1С на одной машине. PROJECT + HARNESS_ROOT в project.env.local; числа подставляет kitenv.",
   "version": 1,
   "updated": "2026-11-02",
   "shared": {

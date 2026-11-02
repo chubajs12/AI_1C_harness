@@ -1,7 +1,13 @@
 ﻿# Проверка окружения комплекта (ничего не меняет): параметры, платформа, каталоги, инструменты, MCP, Docker, Vanessa.
 #   doctor.ps1            # таблица OK / WARN / FAIL
 # Запускать при первом запуске (docs/08) и когда «что-то не работает» — до того, как чинить.
-param([string]$EnvFile = '')
+param(
+    [string]$EnvFile = '',
+    [string]$Project = ''
+)
+if ($Project -and -not $EnvFile) {
+    $EnvFile = Join-Path "F:\AI_1C\projects\$Project\config" 'project.env.local'
+}
 $ErrorActionPreference = 'Continue'
 . (Join-Path $PSScriptRoot 'kitenv.ps1')
 $rows = New-Object System.Collections.Generic.List[object]
