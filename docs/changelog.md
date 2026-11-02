@@ -1,5 +1,10 @@
 # Changelog (настройки агента)
 
+## 1.4.16 — 2026-11-02
+
+- Шина Project-чатов в харнесе: `coordination/README.md`, пустые `coordination/inbox/{energy,dolea,harness}.jsonl`, `scripts/coordination/append-inbox.ps1` и `read-inbox.ps1`. Проект протокол не копирует.
+- `docs/mcp-in-projects.md`: порты остаются в `docs/mcp-and-ports.md` / `config/ports-registry.yaml`; шина с реестром портов не смешивается. Ссылка в `AGENTS.md` (п. 2).
+
 ## 1.4.15 — 2026-11-02
 
 - Канон закрытия задачи: `docs/task-close-report.md`, цикл и FINISHED — `docs/agent-workflow.md`; ссылки в `AGENTS.md` п. 2 и п. 7, шаблон `tasks/_template/log.md`.

@@ -94,6 +94,8 @@ python F:\AI_1C\harness\scripts\mcp\mcp_http.py <VANESSA_MCP_PORT> initialize '{
 
 ## Связанные документы
 
+- [mcp-in-projects.md](mcp-in-projects.md) — проект ссылается на харнес и не копирует реестр
+- [../coordination/README.md](../coordination/README.md) — шина чатов; порты не задает
 - [02_MCP.md](02_MCP.md) — инструменты MCP
 - [03_MCP_1С.md](03_MCP_1С.md) — IIS, пул, execute_code
 - [04_Vanessa.md](04_Vanessa.md) — TM/TC, RDP, микрокоманды
