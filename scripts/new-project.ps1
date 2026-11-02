@@ -54,7 +54,9 @@ $cap = ($Name.Substring(0, 1).ToUpper() + $Name.Substring(1))
 $projectMd = @"
 # $Name
 
-Линия 1С. Правила, skills, scripts, MCP: ``$HarnessRoot`` (``docs/00_Подключить_проект.md``).
+Линия 1С. Правила/skills/scripts: ``$HarnessRoot`` (источник истины, не копия в проекте).
+
+Шина Project-чатов: ``$HarnessRoot\coordination\README.md``. Порты MCP: ``$HarnessRoot\docs\mcp-and-ports.md``. Полный текст протокола в проекте не хранится.
 
 | Что | Путь |
 |-----|------|
