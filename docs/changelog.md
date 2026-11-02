@@ -1,5 +1,10 @@
 # Changelog (настройки агента)
 
+## 1.4.15 — 2026-11-02
+
+- Канон закрытия задачи: `docs/task-close-report.md`, цикл и FINISHED — `docs/agent-workflow.md`; ссылки в `AGENTS.md` п. 2 и п. 7, шаблон `tasks/_template/log.md`.
+- Порты: `docs/mcp-and-ports.md` — проекты только через `config/ports-registry.yaml`; запрет OneBridge/:1414 в `mcp.json`; MCP 1С на IIS в `AGENTS.md` п. 5.
+
 ## 1.4.14 — 2026-11-01
 
 - Политика CFE / `G:\` для Energy ОЭК_ШСЮ: `rules/cfe-version-g-drive.md`, п. 8.1 в `docs/05_Цикл_доработки_расширения.md`, п. 1.14 `AGENTS.md`; `scripts/1c/copy-cfe-release.ps1` (без перезаписи отданной версии).

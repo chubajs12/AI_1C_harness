@@ -63,34 +63,34 @@
 
 Опционально: `HARNESS_PORTS_REGISTRY=<путь>` — если реестр не в `HARNESS_ROOT\config\`.
 
-Клиент MCP (Cursor): `.cursor/mcp.json` — общие URL фиксированы; code-index и MCP 1С — из тех же портов, что реестр + env (см. [00_Подключить_проект.md](00_Подключить_проект.md)).
+Клиент MCP (Cursor): `.cursor/mcp.json` — общие URL фиксированы; code-index и MCP 1С — из тех же портов, что реестр + env (см. [00_Подключить_проект.md](00_Подключить_проект.md)). **OneBridge / EPF-мост (в т.ч. `:1414`) в `mcp.json` не указывать** — канал в базу только MCP 1С на IIS (`shared.mcp1c_iis.port`, обычно **8095**).
 
-## Dolea
+## Проекты линии
 
-| Параметр | Значение (реестр) |
-|----------|-------------------|
-| Vanessa MCP | **9875** |
-| TestClient | **1542** |
-| code-index | 8013 |
-| MCP 1С app | `dolea_ut_claud` на `:8095` |
+Числа **Vanessa MCP**, **TestClient**, **code-index**, **`mcp1c_app`**, **graph project_id** — только в [config/ports-registry.yaml](../config/ports-registry.yaml) (ключ `PROJECT` в `project.env.local`). Дублировать порты проектов в этом файле не нужно.
 
-Запуск:
+Проверка окружения:
 
 ```powershell
-$env:KIT_ENV_FILE = 'F:\AI_1C\projects\dolea\config\project.env.local'
-F:\AI_1C\harness\scripts\vanessa\start-dolea.ps1
+$env:KIT_ENV_FILE = 'F:\AI_1C\projects\<PROJECT>\config\project.env.local'
+F:\AI_1C\harness\scripts\doctor.ps1
 ```
 
-Проверка MCP Vanessa:
+Vanessa (после `KIT_ENV_FILE`):
 
 ```powershell
-python F:\AI_1C\harness\scripts\mcp\mcp_http.py 9875 initialize '{}'
+F:\AI_1C\harness\scripts\vanessa\restart-vanessa.ps1
+# dolea: scripts\vanessa\start-dolea.ps1
 ```
 
-Или `doctor.ps1` с тем же `KIT_ENV_FILE`.
+Проверка MCP Vanessa (подставить `VANESSA_MCP_PORT` из doctor / реестра):
+
+```powershell
+python F:\AI_1C\harness\scripts\mcp\mcp_http.py <VANESSA_MCP_PORT> initialize '{}'
+```
 
 Разовая регистрация задачи планировщика (администратор):  
-`register-launch-task.ps1 -EnvFile ...\dolea\config\project.env.local`
+`scripts\vanessa\register-launch-task.ps1 -EnvFile ...\<PROJECT>\config\project.env.local`
 
 ## Связанные документы
 
