@@ -58,6 +58,8 @@ $projectMd = @"
 
 Шина Project-чатов: ``$HarnessRoot\coordination\README.md``. Порты MCP: ``$HarnessRoot\docs\mcp-and-ports.md``. Полный текст протокола в проекте не хранится.
 
+Разбор видео встречи (кадр в секунду, транскрипт, связка с речью): ``$HarnessRoot\docs\17_Разбор_видео.md``. Шаги в проекте не копировать.
+
 | Что | Путь |
 |-----|------|
 | Обвязка / tasks | ``$projectRoot`` |
